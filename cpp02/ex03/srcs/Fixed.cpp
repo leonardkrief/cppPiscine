@@ -6,13 +6,16 @@
 /*   By: lkrief <lkrief@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 00:32:28 by lkrief            #+#    #+#             */
-/*   Updated: 2023/03/19 16:43:46 by lkrief           ###   ########.fr       */
+/*   Updated: 2023/03/20 06:18:28 by lkrief           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Fixed.hpp"
 #include <iostream>
 #include <cmath>
+
+const float Fixed::_epsilon = static_cast<float>(1)
+		/ static_cast<float>((1 << Fixed::getBinaryPoint()));
 
 Fixed::Fixed(): _value(0)
 {
@@ -62,6 +65,21 @@ Fixed& Fixed::operator=( const Fixed& a )
 	return *this;
 }
 
+Fixed& Fixed::operator=( const float& r )
+{
+	Fixed tmp(r);
+	this->setRawBits(tmp.getRawBits());
+	return *this;
+}
+
+Fixed& Fixed::operator=( const int& r )
+{
+	Fixed tmp(r);
+	this->setRawBits(tmp.getRawBits());
+	return *this;
+}
+
+
 bool Fixed::operator>( const Fixed& r ) const
 {
 	return this->_value > r._value;
@@ -96,6 +114,11 @@ Fixed Fixed::operator+(const Fixed& r ) const
 	return Fixed(this->toFloat() + r.toFloat());
 }
 
+Fixed Fixed::operator-() const
+{
+	return Fixed(-_value);
+}
+
 Fixed Fixed::operator-(const Fixed& r ) const
 {
 	return Fixed(this->toFloat() - r.toFloat());
@@ -111,10 +134,9 @@ Fixed Fixed::operator/(const Fixed& r ) const
 	return Fixed(this->toFloat() / r.toFloat());
 }
 
-
-std::ostream& operator<<( std::ostream& os, const Fixed& a )
+std::ostream& operator<<( std::ostream& os, const Fixed& r )
 {
-	os << a.toFloat();
+	os << r.toFloat();
 	return os;
 }
 
@@ -178,6 +200,27 @@ const Fixed& Fixed::max( const Fixed& a, const Fixed& b)
 	return (a);
 }
 
+bool eq(const Fixed& l, const Fixed& r)
+{
+	return Fixed::max(l, r) - Fixed::min(l, r) < Fixed::getEpsilon();
+}
+
+int Fixed::getBinaryPoint()
+{
+	return Fixed::_binaryPoint;
+}
+
+float Fixed::getEpsilon()
+{
+	return Fixed::_epsilon;
+}
+
+Fixed Fixed::abs( Fixed a ) const
+{
+	if (a >= 0)
+		return a;
+	return -a;
+}
 
 int Fixed::getRawBits() const
 {

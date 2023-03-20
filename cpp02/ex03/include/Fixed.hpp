@@ -6,15 +6,14 @@
 /*   By: lkrief <lkrief@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 00:00:39 by lkrief            #+#    #+#             */
-/*   Updated: 2023/03/20 05:52:48 by lkrief           ###   ########.fr       */
+/*   Updated: 2023/03/20 06:15:47 by lkrief           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FIXED_2_HPP
-# define FIXED_2_HPP
+#ifndef FIXED_HPP
+# define FIXED_HPP
 
 # include <ostream>
-# include <string>
 
 class Fixed
 {
@@ -31,7 +30,10 @@ class Fixed
 		int		toInt() const;
 		float	toFloat() const;
 
-		Fixed& operator=( const Fixed& a );
+		Fixed& operator=( const Fixed& r );
+		Fixed& operator=( const float& r );
+		Fixed& operator=( const int& r );
+		friend std::ostream& operator<<( std::ostream& os, const Fixed& r) ;
 		bool operator>( const Fixed& r ) const;
 		bool operator<( const Fixed& r ) const;
 		bool operator>=( const Fixed& r ) const;
@@ -39,6 +41,7 @@ class Fixed
 		bool operator==( const Fixed& r ) const;
 		bool operator!=( const Fixed& r ) const;
 		Fixed operator+(const Fixed& r ) const;
+		Fixed operator-() const;
 		Fixed operator-(const Fixed& r ) const;
 		Fixed operator*(const Fixed& r ) const;
 		Fixed operator/(const Fixed& r ) const;
@@ -46,17 +49,22 @@ class Fixed
 		Fixed operator++( int n );
 		Fixed& operator--();
 		Fixed operator--( int n );
-		static       Fixed& min( Fixed& a, Fixed& b);
-		static const Fixed& min( const Fixed& a, const Fixed& b);
-		static       Fixed& max( Fixed& a, Fixed& b);
-		static const Fixed& max( const Fixed& a, const Fixed& b);
-		
+		static Fixed& min( Fixed& a, Fixed& b );
+		static const Fixed& min( const Fixed& a, const Fixed& b );
+		static Fixed& max( Fixed& a, Fixed& b );
+		static const Fixed& max( const Fixed& a, const Fixed& b );
+		friend bool eq( const Fixed& l, const Fixed& r );
+		Fixed abs( Fixed a ) const;
+
+		static int getBinaryPoint();
+		static float getEpsilon();
+
 	private:
-		int	_value;
-		static const int	_binaryPoint = 8;
+		int _value;
+		static const int _binaryPoint = 8;
+		static const float _epsilon;
 };
 
-std::ostream& operator<<( std::ostream& os, const Fixed& a );
 
 
 #endif
