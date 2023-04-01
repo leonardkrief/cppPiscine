@@ -6,12 +6,12 @@
 /*   By: lkrief <lkrief@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 14:14:53 by lkrief            #+#    #+#             */
-/*   Updated: 2023/03/08 15:48:59 by lkrief           ###   ########.fr       */
+/*   Updated: 2023/03/31 15:27:29 by lkrief           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
-#include <cctype>
+// #include <cctype>
 
 int main(int ac, char **av)
 {
@@ -26,5 +26,5 @@ int main(int ac, char **av)
 		}
 	}
 	std::cout << std::endl;
-	return (EXIT_SUCCESS);
+	return (0);
 }
