@@ -1,9 +1,0 @@
-I get an input for example 42.0f
-I need to determine its type, so I will make it pass through all my isTypes
-According to the value of i, I get the type.
-
-Now, I have to convert it to its actual type, so I can just call the
-appropriate function.
-
-Then inside this function, I can convert it explicitly to the three other
-types, from the type I just got.
