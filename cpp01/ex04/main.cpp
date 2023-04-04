@@ -6,7 +6,7 @@
 /*   By: lkrief <lkrief@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 14:14:53 by lkrief            #+#    #+#             */
-/*   Updated: 2023/04/04 15:12:42 by lkrief           ###   ########.fr       */
+/*   Updated: 2023/04/04 23:04:49 by lkrief           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,45 +17,57 @@ int	main( int ac, char **av )
 {
     if (ac != 4)
     {
-        std::cerr << "Invalid number of arguments." << std::endl;
+        std::cerr << "Error: invalid number of arguments." << std::endl;
         return -1;
     }
-
-    std::fstream	infile(av[1], std::ios::in);
+    // Check if s1 is non null.
+    // Else, infinite loop could occur
+    if (!av[2][0])
+    {
+        std::cerr << "Error: searched string is blank." << std::cout;
+        return -1;
+    }
+    std::string		infile_name(av[1]);
+    std::fstream	infile(infile_name, std::ios::in);
     if (!infile.is_open())
     {
-        std::cerr << "'" << av[1]
-        << "': cannot open the file." << std::endl;
+        std::cerr << "Error: cannot open file: '"
+            << av[1] << "'" << std::endl;
         return -1;
     }
-    std::cout << "'" << av[1]
-        << "': successfully opened in read mode" << std::endl;
+    std::cout << "Opened in read mode: '"
+        << av[1] << "'" << std::endl;
 
-    std::string		outfile_name(std::string(av[1]) + ".replace");
-    std::fstream	outfile(outfile_name.c_str(), std::ios::out | std::ios::trunc);
-    if (!outfile.is_open())
+    std::string		outfile_name(av[1]);
+    outfile_name += ".replace";
+    std::fstream	outfile(outfile_name, std::ios::out | std::ios::trunc);
+    if (!outfile.is_open()) 
     {
-        std::cerr << "'" << av[1]
-        << "': cannot open the file." << std::endl;
+        std::cerr << "Error: cannot open file: '"
+            << av[1] << ".replace'" << std::endl;
         return -1;
     }
-    std::cout << "'" << outfile_name
-        << "': successfully opened and truncated in write mode." << std::endl;
+    std::cout << "Opened in write mode and truncated: '"
+        << outfile_name << "'" << std::endl;
 
     std::string	line;
     std::string	s1(av[2]);
     std::string	s2(av[3]);
     size_t		pos;
-    std::cout << "Replacing the file starts..." << std::endl;
-    while (std::getline(infile, line))
+
+    // Need to load the whole file at once inside line
+    // Else, we wont be able to replace strings
+    // such as "*\n*", because getline would cut at '\n'
+    while (std::getline(infile, line, '\0'))
     {
-        if (!infile.eof())
+        if (!infile.eof()) {
             line += '\n';
-        do
-        {
+        }
+        do {
             pos = line.find(s1);
-            if (pos == std::string::npos)
+            if (pos == std::string::npos) {
                 outfile << line;
+            }
             else
             {
                 outfile << line.substr(0, pos);
@@ -64,9 +76,8 @@ int	main( int ac, char **av )
             }
         } while (pos != std::string::npos);
     }
-    std::cout << "Replacing done. Closing files." << std::endl;
-    infile.close();
-    outfile.close();
+    // not necessary to close the files manually as std::fstream objects are RAII
+    // objects: https://stackoverflow.com/questions/4802494/do-i-need-to-close-a-stdfstream
+    // infile.close();
+    // outfile.close();
 }
-// not necessary to close the files manually as std::fstream objects are RAII
-// objects: https://stackoverflow.com/questions/4802494/do-i-need-to-close-a-stdfstream
