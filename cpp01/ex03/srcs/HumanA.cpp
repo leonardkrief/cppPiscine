@@ -6,7 +6,7 @@
 /*   By: lkrief <lkrief@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 14:56:37 by lkrief            #+#    #+#             */
-/*   Updated: 2023/03/16 19:26:59 by lkrief           ###   ########.fr       */
+/*   Updated: 2023/04/04 13:28:58 by lkrief           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,6 @@ HumanA::~HumanA( void )
 void	HumanA::attack( void ) const
 {
 	std::cout << "[" << (void *)this << "] " << std::flush;
-	std::cout << this->_name << " attacked with their '"
+	std::cout << this->_name << " attacks with their '"
 		<< this->_weapon.getType() << "'" << std::endl;
 }

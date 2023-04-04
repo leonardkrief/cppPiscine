@@ -6,7 +6,7 @@
 /*   By: lkrief <lkrief@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 17:11:55 by lkrief            #+#    #+#             */
-/*   Updated: 2023/03/16 02:20:41 by lkrief           ###   ########.fr       */
+/*   Updated: 2023/04/04 12:28:11 by lkrief           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ Zombie*	zombieHorde( int N, std::string name )
 
 	for (int i = 0; i < N; ++i)
 		horde[i].setName(name);
-	std::cout << "----------"
+	std::cout << "=========="
 		<< "Horde of '" << name << "s' raised from the deads"
-		<< "----------" << std::endl;
+		<< "==========" << std::endl;
 	return (horde);
 }
 

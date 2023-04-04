@@ -6,7 +6,7 @@
 /*   By: lkrief <lkrief@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 14:56:42 by lkrief            #+#    #+#             */
-/*   Updated: 2023/03/16 16:03:12 by lkrief           ###   ########.fr       */
+/*   Updated: 2023/04/04 13:37:08 by lkrief           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,14 @@
 
 class Weapon
 {
-	public:
-		Weapon( std::string type);
-		~Weapon();
-		void				whatType( void ) const;
-		const std::string	&getType( void ) const;
-		void				setType( std::string newType );
+    public:
+        Weapon( std::string type);
+        ~Weapon();
+        const std::string& getType() const;
+        void setType( const std::string& newType );
 
-	private:
-		std::string _type;
+    private:
+        std::string _type;
 };
 
 #endif

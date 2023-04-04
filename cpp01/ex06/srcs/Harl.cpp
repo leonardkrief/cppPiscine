@@ -6,7 +6,7 @@
 /*   By: lkrief <lkrief@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 14:10:56 by lkrief            #+#    #+#             */
-/*   Updated: 2023/03/17 18:49:57 by lkrief           ###   ########.fr       */
+/*   Updated: 2023/04/04 16:21:14 by lkrief           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,16 +38,21 @@ void Harl::_usage( void ) const
 	std::cout << message_strings[static_cast<int>(USAGE)] << std::endl;
 }
 
+static std::string& toUpper(std::string &str)
+{
+    for (size_t i = 0; i < str.size(); ++i)
+        str[i] = toupper(str[i]);
+    return str;
+}
+
 Level_e	getLevel( std::string level )
 {
 	std::string levels[] = { "DEBUG", "INFO", "WARNING", "ERROR" };
 
 	for (int i = 0; i < 4; ++i)
 	{
-		if (level == levels[i])
-		{
+		if (toUpper(level) == levels[i])
 			return (static_cast<Level_e>(i));
-		}
 	}
 	return USAGE;
 }

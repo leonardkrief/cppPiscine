@@ -6,7 +6,7 @@
 /*   By: lkrief <lkrief@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 14:14:53 by lkrief            #+#    #+#             */
-/*   Updated: 2023/03/16 05:00:37 by lkrief           ###   ########.fr       */
+/*   Updated: 2023/04/04 12:38:42 by lkrief           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	main(void)
 	std::string *stringPTR = &str;
 	std::string &stringREF = str;
 
-	std::cout << "   string  : " << (void *) &str << std::endl;
+	std::cout << "string     : " << (void *) &str << std::endl;
 	std::cout << "stringPTR  : " << (void *) stringPTR << std::endl;
 	std::cout << "stringREF  : " << (void *) &stringREF << std::endl;
 

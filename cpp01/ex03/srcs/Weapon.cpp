@@ -6,7 +6,7 @@
 /*   By: lkrief <lkrief@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 14:56:37 by lkrief            #+#    #+#             */
-/*   Updated: 2023/03/16 16:23:18 by lkrief           ###   ########.fr       */
+/*   Updated: 2023/04/04 13:37:15 by lkrief           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,31 +15,24 @@
 
 Weapon::Weapon( std::string type ) : _type(type)
 {
-	std::cout << "[" << (void *)this << "] " << std::flush;
-	std::cout << "Weapon created" << std::endl;
+    std::cout << "[" << (void *)this << "] "
+        << "Weapon created" << std::endl;
 }
 
 Weapon::~Weapon()
 {
-	std::cout << "[" << (void *)this << "] " << std::flush;
-	std::cout << "Weapon destroyed" << std::endl;
+    std::cout << "[" << (void *)this << "] "
+        << "Weapon destroyed" << std::endl;
 }
 
-void	Weapon::whatType( void ) const
+const std::string	&Weapon::getType() const
 {
-	std::cout << "[" << (void *)this << "] " << std::flush;
-	std::cout << "Weapon type is '" << this->_type << "'" << std::endl;
+    return this->_type;
 }
 
-const std::string	&Weapon::getType( void ) const
+void	Weapon::setType( const std::string& newType )
 {
-	const std::string&	ref = this->_type;
-	return ref;
-}
-
-void	Weapon::setType( std::string newType )
-{
-	this->_type = newType;
-	std::cout << "[" << (void *)this << "] " << std::flush;
-	std::cout << "Weapon type was set to '" << this->_type << "'" << std::endl;
+    this->_type = newType;
+    std::cout << "[" << (void *)this << "] "
+        << "Weapon type was set to '" << this->_type << "'" << std::endl;
 }
