@@ -12,16 +12,14 @@
 
 #include "ScalarConverter.hpp"
 #include <sstream>
-#include <locale>
 
 int main(int ac, char** av)
 {
-    std::locale::global(std::locale(""));
     int x = 1;
     if (ac == 1)
     {
         std::cout << "No input provided. Abort...\n";
-        exit(EXIT_FAILURE);
+        exit(EXIT_SUCCESS);
     }
     if (std::string(av[1]) == "-v")
     {
@@ -39,4 +37,5 @@ int main(int ac, char** av)
             std::cerr << e.what() << std::endl;
         }
     }
+    exit(EXIT_SUCCESS);
 }

@@ -20,14 +20,16 @@ char ScalarConverter::_char = 0;
 int ScalarConverter::_int = 0;
 float ScalarConverter::_float = 0;
 double ScalarConverter::_double = 0;
+
 bool ScalarConverter::_charValueExist = false;
 bool ScalarConverter::_intValueExist = false;
 bool ScalarConverter::_floatValueExist = false;
-bool ScalarConverter::__VERBOSE__ = false;
+
+bool ScalarConverter::_verbose_ = false;
 
 ScalarConverter::ScalarConverter()
 {
-    if (ScalarConverter::__PRINT__LOG__)
+    if (ScalarConverter::_print_log_)
     {
         std::cout << "[" << (void*)this
             << "] ScalarConverter default constructor called" << std::endl;
@@ -37,7 +39,7 @@ ScalarConverter::ScalarConverter()
 ScalarConverter::ScalarConverter( const ScalarConverter& s )
 {
     *this = s;
-    if (ScalarConverter::__PRINT__LOG__)
+    if (ScalarConverter::_print_log_)
     {
         std::cout << "[" << (void*)this
             << "] ScalarConverter copy constructor called" << std::endl;
@@ -46,7 +48,7 @@ ScalarConverter::ScalarConverter( const ScalarConverter& s )
 
 ScalarConverter::~ScalarConverter()
 {
-    if (ScalarConverter::__PRINT__LOG__)
+    if (ScalarConverter::_print_log_)
     {
         std::cout << "[" << (void*)this
             << "] ScalarConverter destructor called" << std::endl;
@@ -57,7 +59,7 @@ ScalarConverter::~ScalarConverter()
 ScalarConverter& ScalarConverter::operator=( const ScalarConverter& s )
 {
     (void)s;
-    if (ScalarConverter::__PRINT__LOG__)
+    if (ScalarConverter::_print_log_)
     {
         std::cout << "[" << (void*)this
             << "] ScalarConverter copy assignment operator called"
@@ -66,7 +68,7 @@ ScalarConverter& ScalarConverter::operator=( const ScalarConverter& s )
     return *this;
 }
 
-bool ScalarConverter::isChar( const std::string& input )
+bool ScalarConverter::_isChar( const std::string& input )
 {
     if (input.size() == 1 && !(input[0] >= '0' && input[0] <= '9'))
         return true;
@@ -75,7 +77,7 @@ bool ScalarConverter::isChar( const std::string& input )
     return false;
 }
 
-bool ScalarConverter::isInt( const std::string& input )
+bool ScalarConverter::_isInt( const std::string& input )
 {
     int intValue;
     std::istringstream iss(input);
@@ -88,7 +90,7 @@ bool ScalarConverter::isInt( const std::string& input )
     return true;
 }
 
-bool ScalarConverter::isFloat( const std::string& input )
+bool ScalarConverter::_isFloat( const std::string& input )
 {
     float floatValue;
     std::size_t pos = input.find(".");
@@ -108,7 +110,7 @@ bool ScalarConverter::isFloat( const std::string& input )
     return true;
 }
 
-bool ScalarConverter::isDouble( const std::string& input )
+bool ScalarConverter::_isDouble( const std::string& input )
 {
     double doubleValue;
     std::size_t pos = input.find(".");
@@ -124,14 +126,14 @@ bool ScalarConverter::isDouble( const std::string& input )
     return true;
 }
 
-char ScalarConverter::toChar( const std::string& input )
+char ScalarConverter::_toChar( const std::string& input )
 {
     if (input.size() == 1)
         return input[0];
     return input[1];
 }
 
-int ScalarConverter::toInt( const std::string& input )
+int ScalarConverter::_toInt( const std::string& input )
 {
     int intValue;
     std::istringstream iss(input);
@@ -142,7 +144,7 @@ int ScalarConverter::toInt( const std::string& input )
     return intValue;
 }
 
-float ScalarConverter::toFloat( const std::string& input )
+float ScalarConverter::_toFloat( const std::string& input )
 {
     float floatValue;
     std::istringstream iss(input.substr(0, input.size() - 1));
@@ -160,7 +162,7 @@ float ScalarConverter::toFloat( const std::string& input )
     return floatValue;
 }
 
-double ScalarConverter::toDouble( const std::string& input )
+double ScalarConverter::_toDouble( const std::string& input )
 {
     double doubleValue;
     std::istringstream iss(input);
@@ -178,7 +180,7 @@ double ScalarConverter::toDouble( const std::string& input )
     return doubleValue;
 }
 
-void ScalarConverter::convertChar( char c )
+void ScalarConverter::_convertChar( char c )
 {
     _char = c;
     _int = static_cast<int>(c);
@@ -189,7 +191,7 @@ void ScalarConverter::convertChar( char c )
     _floatValueExist = true;
 }
 
-void ScalarConverter::convertInt( int i )
+void ScalarConverter::_convertInt( int i )
 {
     _char = static_cast<char>(i);
     _int = i;
@@ -201,7 +203,7 @@ void ScalarConverter::convertInt( int i )
     _floatValueExist = true;
 }
 
-void ScalarConverter::convertFloat( float f )
+void ScalarConverter::_convertFloat( float f )
 {
     _char = static_cast<char>(f);
     _int = static_cast<int>(f);
@@ -214,7 +216,7 @@ void ScalarConverter::convertFloat( float f )
     _floatValueExist = true;
 }
 
-void ScalarConverter::convertDouble( double d )
+void ScalarConverter::_convertDouble( double d )
 {
     _char = static_cast<char>(d);
     _int = static_cast<int>(d);
@@ -228,7 +230,7 @@ void ScalarConverter::convertDouble( double d )
         _floatValueExist = true;
 }
 
-void ScalarConverter::displayChar()
+void ScalarConverter::_displayChar()
 {
     if (_charValueExist && _char >= 33 && _char <= 126)
         std::cout << "char : '" << _char << "'" << std::endl;
@@ -238,7 +240,7 @@ void ScalarConverter::displayChar()
         std::cout << "char : impossible" << std::endl;
 }
 
-void ScalarConverter::displayInt()
+void ScalarConverter::_displayInt()
 {
     if (_intValueExist)
         std::cout << "int : " << _int << std::endl;
@@ -246,7 +248,7 @@ void ScalarConverter::displayInt()
         std::cout << "int : impossible" << std::endl;
 }
 
-void ScalarConverter::displayFloat()
+void ScalarConverter::_displayFloat()
 {
     if (_floatValueExist)
     {
@@ -263,7 +265,7 @@ void ScalarConverter::displayFloat()
         std::cout << "float : impossible" << std::endl;
 }
 
-void ScalarConverter::displayDouble()
+void ScalarConverter::_displayDouble()
 {
     std::cout << "double: ";
     if (std::isnan(_double))
@@ -275,7 +277,7 @@ void ScalarConverter::displayDouble()
     std::cout << std::endl;
 }
 
-void ScalarConverter::resetValues()
+void ScalarConverter::_resetValues()
 {
     ScalarConverter::_char = 0;
     ScalarConverter::_int = 0;
@@ -288,41 +290,41 @@ void ScalarConverter::resetValues()
 
 void ScalarConverter::convert( const std::string& input )
 {
-    resetValues();
-    if (isChar(input))
+    _resetValues();
+    if (_isChar(input))
     {
-        verboseHeader(input, "CHAR");
-        convertChar(toChar(input));
+        _verboseHeader(input, "CHAR");
+        _convertChar(_toChar(input));
     }
-    else if (isInt(input))
+    else if (_isInt(input))
     {
-        verboseHeader(input, "INT");
-        convertInt(toInt(input));
+        _verboseHeader(input, "INT");
+        _convertInt(_toInt(input));
     }
-    else if (isFloat(input))
+    else if (_isFloat(input))
     {
-        verboseHeader(input, "FLOAT");
-        convertFloat(toFloat(input));
+        _verboseHeader(input, "FLOAT");
+        _convertFloat(_toFloat(input));
     }
-    else if (isDouble(input))
+    else if (_isDouble(input))
     {
-        verboseHeader(input, "DOUBLE");
-        convertDouble(toDouble(input));
+        _verboseHeader(input, "DOUBLE");
+        _convertDouble(_toDouble(input));
     }
     else
     {
-        verboseHeader(input, "UNKNOWN");
+        _verboseHeader(input, "UNKNOWN");
         throw std::invalid_argument("Invalid input. No available conversion.");
     }
-    displayChar();
-    displayInt();
-    displayFloat();
-    displayDouble();
+    _displayChar();
+    _displayInt();
+    _displayFloat();
+    _displayDouble();
 }
 
 void ScalarConverter::verboseModeON()
 {
-    __VERBOSE__ = true;
+    _verbose_ = true;
 }
 
 // I discovered that some characters are 1-char wide but contain
@@ -331,12 +333,12 @@ void ScalarConverter::verboseModeON()
 // To handle this properly I can use std::wstring but may not
 // be compatible across all platforms.
 // Best use is to use ICU or Boost.Locale.
-int ScalarConverter::displayableStrings( std::string& i, std::string& d )
+int ScalarConverter::_displayableStrings( std::string& i, std::string& d )
 {
-    if (i.size() > __HEADER__WIDTH__)
-        i = " " + i.substr(0, __HEADER__WIDTH__ - 7) + "... ";
-    if (d.size() > __HEADER__WIDTH__)
-        d = " " + d.substr(0, __HEADER__WIDTH__ - 7) + "... ";
+    if (i.size() > _header_width_)
+        i = " " + i.substr(0, _header_width_ - 7) + "... ";
+    if (d.size() > _header_width_)
+        d = " " + d.substr(0, _header_width_ - 7) + "... ";
     int len = d.size() > i.size() ? d.size() : i.size();
     if (i.size() < d.size())
     {
@@ -354,15 +356,15 @@ int ScalarConverter::displayableStrings( std::string& i, std::string& d )
 // If I used wstrings,
 // I should use std::wcout instead of std::cout.
 // string litterals should be written L"***" instead of "***".
-void ScalarConverter::verboseHeader( const std::string& input, const std::string& type )
+void ScalarConverter::_verboseHeader( const std::string& input, const std::string& type )
 {
-    if (__VERBOSE__)
+    if (_verbose_)
     {
         static bool first = true;
         std::string inp = " Input: " + input + " ";
         std::string det = " Detected type: " + type + " ";
-        int w = __HEADER__WIDTH__;
-        int len = displayableStrings(inp, det);
+        int w = _header_width_;
+        int len = _displayableStrings(inp, det);
 
         if (!first)
             std::cout << std::endl;
