@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "ScalarConverter.hpp"
-#include <iostream>
 #include <iomanip>
 #include <limits>
 #include <sstream>
@@ -92,13 +91,17 @@ bool ScalarConverter::isInt( const std::string& input )
 bool ScalarConverter::isFloat( const std::string& input )
 {
     float floatValue;
-    std::istringstream iss(input);
+    std::size_t pos = input.find(".");
+    std::string str(input);
 
     if (input == "nanf" || input == "-inff" || input == "+inff")
         return true;
-    if (input.empty() || input.find('.') == std::string::npos
+    if (input.empty() || pos + 3 > input.size()
         || input.back() != 'f')
         return false;
+
+    str.pop_back();
+    std::istringstream iss(str);
     iss >> floatValue;
     if (iss.fail() || !iss.eof())
         return false;
@@ -108,11 +111,12 @@ bool ScalarConverter::isFloat( const std::string& input )
 bool ScalarConverter::isDouble( const std::string& input )
 {
     double doubleValue;
+    std::size_t pos = input.find(".");
     std::istringstream iss(input);
 
     if (input == "nan" || input == "-inf" || input == "+inf")
         return true;
-    if (input.empty() || input.find('.') == std::string::npos)
+    if (input.empty() || pos + 2 > input.size())
         return false;
     iss >> doubleValue;
     if (iss.fail() || !iss.eof())
@@ -308,7 +312,7 @@ void ScalarConverter::convert( const std::string& input )
     else
     {
         verboseHeader(input, "UNKNOWN");
-        throw std::invalid_argument("Invalid input. Abort conversion.");
+        throw std::invalid_argument("Invalid input. No available conversion.");
     }
     displayChar();
     displayInt();
@@ -321,9 +325,14 @@ void ScalarConverter::verboseModeON()
     __VERBOSE__ = true;
 }
 
+// I discovered that some characters are 1-char wide but contain
+// 2 or more chars. It is the case for UTF-8 encoded ones 
+// like e.g. 'é' or 'ù'. Hence, my display gets un-aligned.
+// To handle this properly I can use std::wstring but may not
+// be compatible across all platforms.
+// Best use is to use ICU or Boost.Locale.
 int ScalarConverter::displayableStrings( std::string& i, std::string& d )
 {
-
     if (i.size() > __HEADER__WIDTH__)
         i = " " + i.substr(0, __HEADER__WIDTH__ - 7) + "... ";
     if (d.size() > __HEADER__WIDTH__)
@@ -342,6 +351,9 @@ int ScalarConverter::displayableStrings( std::string& i, std::string& d )
     return len;
 }
 
+// If I used wstrings,
+// I should use std::wcout instead of std::cout.
+// string litterals should be written L"***" instead of "***".
 void ScalarConverter::verboseHeader( const std::string& input, const std::string& type )
 {
     if (__VERBOSE__)

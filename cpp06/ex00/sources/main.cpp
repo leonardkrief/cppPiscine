@@ -11,11 +11,12 @@
 /* ************************************************************************** */
 
 #include "ScalarConverter.hpp"
-#include <limits>
-
+#include <sstream>
+#include <locale>
 
 int main(int ac, char** av)
 {
+    std::locale::global(std::locale(""));
     int x = 1;
     if (ac == 1)
     {
