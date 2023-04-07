@@ -6,11 +6,11 @@
 /*   By: lkrief <lkrief@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 12:29:14 by lkrief            #+#    #+#             */
-/*   Updated: 2023/04/08 00:54:23 by lkrief           ###   ########.fr       */
+/*   Updated: 2023/04/08 00:53:37 by lkrief           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "iter.hpp"
+#include "array.hpp"
 #include <string>
 #include <iostream>
 #include <iomanip>
@@ -100,65 +100,37 @@ std::string getValue<std::string>()
     return std::string(s);
 }
 
-void plus1(int& n)
+template<typename T>
+void randomArray(Array<T>& tab)
 {
-    n++;
-}
-int testPlus1()
-{
-    int tab[N] = {getValue<int>() % 100, getValue<int>() % 100, getValue<int>() % 100, getValue<int>() % 100, getValue<int>() % 100};
-
-    printTitle("test +1");
-    std::cout << "BEFORE  ";
-    printTab(tab);
-    iter(tab, N, plus1);
-    std::cout << "AFTER   ";
-    printTab(tab);
-    return 0;
+    for (unsigned int i = 0; i < N; i++)
+        tab[i] = getValue<T>();
 }
 
-void toUpper(std::string& str)
+template<typename T>
+int testArray(Array<T> elem)
 {
-    for (unsigned int i = 0; i < str.size(); i++)
-        str[i] = std::toupper(str[i]);
-}
+    printTitle("test " + std::string(typeid(T).name()));
 
-int testToUpper()
-{
-    std::string s[N] = {getValue<std::string>(), getValue<std::string>(), getValue<std::string>(), getValue<std::string>(), getValue<std::string>()};
+    std::cout << "OG        " << elem << std::endl;
 
-    printTitle("to upper");
-    std::cout << "BEFORE  ";
-    printTab(s);
-    iter(s, N, toUpper);
-    std::cout << "AFTER   ";
-    printTab(s);
-    return 0;
-}
+    randomArray<T>(elem);
+    Array<T> tab(elem);
 
+    std::cout << "RANDOM    " << elem << std::endl;
+    std::cout << "COPY      " << tab << std::endl;
+    try { tab[N + 1] = 0; }
+    catch(const std::exception& e) { std::cerr << e.what() << '\n'; }
 
-void shiftBits(int& n)
-{
-    n <<= 1;
-}
-
-int testShiftBits()
-{
-    int tab[N] = {getValue<int>() % 100 - 50, getValue<int>() % 100 - 50, getValue<int>() % 100 - 50, getValue<int>() % 100 - 50, getValue<int>() % 100 - 50};
-
-    printTitle("shift bits (mult by 2)");
-    std::cout << "BEFORE  ";
-    printTab(tab);
-    iter(tab, N, shiftBits);
-    std::cout << "AFTER   ";
-    printTab(tab);
     return 0;
 }
 
 int main()
 {
     std::srand(std::time(0));
-    testPlus1();
-    testToUpper();
-    testShiftBits();
+
+    testArray(Array<char>(N));
+    testArray(Array<int>(N));
+    testArray(Array<float>(N));
+    testArray(Array<double>(N));
 }
