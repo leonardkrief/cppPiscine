@@ -6,7 +6,7 @@
 /*   By: lkrief <lkrief@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 12:25:49 by lkrief            #+#    #+#             */
-/*   Updated: 2023/04/07 19:28:26 by lkrief           ###   ########.fr       */
+/*   Updated: 2023/04/08 12:32:09 by lkrief           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void iter( T* addr, unsigned int N, void f( T& arg ) )
 }
 
 template<typename T, unsigned N>
-void printTab( T (&addr)[N] )
+void printTab( const T (&addr)[N] )
 {
     std::cout << "{";
     for (unsigned int i = 0; i < N; i++)

@@ -6,7 +6,7 @@
 /*   By: lkrief <lkrief@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 12:25:49 by lkrief            #+#    #+#             */
-/*   Updated: 2023/04/08 00:57:38 by lkrief           ###   ########.fr       */
+/*   Updated: 2023/04/08 01:04:32 by lkrief           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ template<typename T> class Array
         static const bool _print_log_ = false;
 };
 
-
 template<typename T>
 std::ostream& operator<<( std::ostream& os, const Array<T>& elem )
 {
@@ -100,6 +99,5 @@ std::ostream& operator<<( std::ostream& os, const Array<T>& elem )
     os << "}";
     return os;
 }
-
 
 #endif
