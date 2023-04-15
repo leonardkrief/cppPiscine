@@ -6,7 +6,7 @@
 /*   By: lkrief <lkrief@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 00:00:39 by lkrief            #+#    #+#             */
-/*   Updated: 2023/03/20 05:52:48 by lkrief           ###   ########.fr       */
+/*   Updated: 2023/04/15 20:56:48 by lkrief           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,9 @@ class Fixed
 		
 	private:
 		int	_value;
-		static const int	_binaryPoint = 8;
+		static const int _binaryPoint = 8;
+
+		static const int _print_log_ = 8;
 };
 
 std::ostream& operator<<( std::ostream& os, const Fixed& a );
