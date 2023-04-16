@@ -6,7 +6,7 @@
 /*   By: lkrief <lkrief@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 00:32:28 by lkrief            #+#    #+#             */
-/*   Updated: 2023/04/15 21:01:00 by lkrief           ###   ########.fr       */
+/*   Updated: 2023/04/16 14:12:05 by lkrief           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,24 +23,22 @@ Fixed::Fixed(): _value(0)
     }
 }
 
-Fixed::Fixed( Fixed& a )
+Fixed::Fixed( Fixed& a ) : _value(a._value)
 {
     if (Fixed::_print_log_)
     {
         std::cout << "[" << (void *)this
             << "] 'Fixed point' Copy constructor called" << std::endl;
     }
-    *this = a;
 }
 
-Fixed::Fixed( const Fixed& a )
+Fixed::Fixed( const Fixed& a ) : _value(a._value)
 {
     if (Fixed::_print_log_)
     {
         std::cout << "[" << (void *)this
             << "] 'Fixed point' Copy constructor called" << std::endl;
     }
-    *this = a;
 }
 
 Fixed::Fixed( const int n ) : _value(n << _binaryPoint)
@@ -173,30 +171,22 @@ Fixed Fixed::operator--( int n )
 
 Fixed& Fixed::min( Fixed& a, Fixed& b)
 {
-    if (a < b)
-        return (a);
-    return (b);
+    return (a < b) ? a : b;
 }
 
 const Fixed& Fixed::min( const Fixed& a, const Fixed& b)
 {
-    if (a < b)
-        return (a);
-    return (b);
+    return (a < b) ? a : b;
 }
 
 Fixed& Fixed::max( Fixed& a, Fixed& b)
 {
-    if (a < b)
-        return (b);
-    return (a);
+    return (a < b) ? b : a;
 }
 
 const Fixed& Fixed::max( const Fixed& a, const Fixed& b)
 {
-    if (a < b)
-        return (b);
-    return (a);
+    return (a < b) ? b : a;
 }
 
 

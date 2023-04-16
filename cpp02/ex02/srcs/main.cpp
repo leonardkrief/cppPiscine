@@ -6,7 +6,7 @@
 /*   By: lkrief <lkrief@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/18 02:20:35 by lkrief            #+#    #+#             */
-/*   Updated: 2023/03/19 16:28:22 by lkrief           ###   ########.fr       */
+/*   Updated: 2023/04/16 14:51:08 by lkrief           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ static void testIncrements( Fixed a )
 	std::cout << "a = " << a << std::endl;
 	std::cout << "a.op++(256) = " << a.operator++(256) << std::endl;
 	std::cout << "a = " << a << std::endl;
+    std::cout << "a.op++(5) = " << a.operator++(5) << std::endl;
+	std::cout << "a = " << a << std::endl;
 	std::cout << std::endl;
 }
 
@@ -65,7 +67,7 @@ static void	testMaxMin( Fixed a, Fixed b, const Fixed c )
 	std::cout << "a = " << a << "  b = " << b << std::endl;
 	std::cout << "  max(a,b) = " << Fixed::max(a, b) << std::endl;
 	std::cout << "  min(a,b) = " << Fixed::min(a, b) << std::endl;
-	std::cout << "a = " << a << "  c(const) = " << b << std::endl;
+	std::cout << "a = " << a << "  c(const) = " << c << std::endl;
 	std::cout << "  max(a,c) = " << Fixed::max(a, c) << std::endl;
 	std::cout << "  min(a,c) = " << Fixed::min(a, c) << std::endl;
 	std::cout << std::endl;
