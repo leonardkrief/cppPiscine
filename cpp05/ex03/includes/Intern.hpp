@@ -40,3 +40,29 @@ class Intern
 typedef AForm* (*MakeFormFunction)(std::string);
 
 #endif
+
+// class Intern
+// {
+//     public:
+//         Intern();
+//         Intern( const Intern& b );
+//         Intern& operator=( const Intern& b );
+//         ~Intern();
+
+
+//         AForm* makeForm( const std::string& formName,
+//                 const std::string& formTarget ) const;
+
+//         class UnknownFormName : public std::exception
+//         {
+//             public:
+//                 const char* what() const throw();
+//         };
+
+//     private:
+//         AForm* newShrubbery(const std::string& target);
+//         AForm* newRobotomy(const std::string& target);
+//         AForm* newPresidential(const std::string& target);
+// };
+
+// typedef AForm* (*MakeFormFunction)( const std::string& );

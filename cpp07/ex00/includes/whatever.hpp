@@ -6,7 +6,7 @@
 /*   By: lkrief <lkrief@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 12:25:49 by lkrief            #+#    #+#             */
-/*   Updated: 2023/04/07 18:33:26 by lkrief           ###   ########.fr       */
+/*   Updated: 2023/06/22 22:49:28 by lkrief           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,14 @@ void swap( T& a, T& b )
 template<typename T>
 T& min( T& a, T& b )
 {
-    if (std::less<T>()(a, b)) { return a; }
+    if (std::less<T>()(a, b)) return a;
     return b;
 }
 
 template<typename T>
 T& max( T& a, T& b )
 {
-    if (std::less<T>()(b, a)) { return a; }
+    if (std::less<T>()(b, a)) return a;
     return b;
 }
 

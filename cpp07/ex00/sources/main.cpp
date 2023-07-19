@@ -1,14 +1,14 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: lkrief <lkrief@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/07 12:29:14 by lkrief            #+#    #+#             */
-/*   Updated: 2023/04/07 16:17:10 by lkrief           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+// /* ************************************************************************** */
+// /*                                                                            */
+// /*                                                        :::      ::::::::   */
+// /*   main.cpp                                           :+:      :+:    :+:   */
+// /*                                                    +:+ +:+         +:+     */
+// /*   By: lkrief <lkrief@student.42.fr>              +#+  +:+       +#+        */
+// /*                                                +#+#+#+#+#+   +#+           */
+// /*   Created: 2023/04/07 12:29:14 by lkrief            #+#    #+#             */
+// /*   Updated: 2023/06/22 22:52:16 by lkrief           ###   ########.fr       */
+// /*                                                                            */
+// /* ************************************************************************** */
 
 #include "whatever.hpp"
 #include <string>
@@ -22,7 +22,7 @@
 #define USAGE_MESSAGE "\
 to run default mode: [-d, --default]\n\
 to run random mode: [-r, --random]\n\n\
-random mode: generates random tests. types and number of tests as options.\n\
+random mode generates random tests. types and number of tests as options.\n\
           ./templates -r [-cifds types] [-n nb_of_tests]\n\n\
 Examples: ./templates -r\n\
           ./templates -r 2\n\
@@ -247,3 +247,42 @@ int main(int ac, char** av)
     if (mode == "-r" || mode == "--random")
         return randomTests(ac - 1, av + 1);
 }
+
+
+
+// #include <string>
+// #include <iostream>
+// #include "whatever.hpp"
+
+// class Awesome
+// {
+//     public:
+//         Awesome() : _n(0) {}
+//         Awesome( int n ): _n(n) {}
+//         Awesome& operator=( Awesome& a ){_n=a._n;return*this;}
+//         ~Awesome() {}
+//         bool operator==( Awesome const& rhs ) const { return(this->_n==rhs._n); }
+//         bool operator!=( Awesome const& rhs ) const { return(this->_n!=rhs._n); }
+//         bool operator>( Awesome const& rhs ) const { return(this->_n>rhs._n); }
+//         bool operator<( Awesome const& rhs ) const { return(this->_n<rhs._n); }
+//         bool operator>=( Awesome const& rhs ) const { return(this->_n>=rhs._n); }
+//         bool operator<=( Awesome const& rhs ) const { return(this->_n<=rhs._n); }
+        
+//         int get_n() const { return _n; }
+
+//     private:
+//         int _n;
+// };
+
+// std::ostream&operator<<(std::ostream&o, const Awesome&a) {o<<a.get_n(); return o;}
+
+// int main(void)
+// {
+//     Awesome a(2), b(4);
+
+//     swap(a, b);
+//     std::cout << a << " " << b << std::endl;
+//     std::cout << max(a,b) << std::endl;
+//     std::cout << min(a,b) << std::endl;
+//     return (0);
+// }

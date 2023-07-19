@@ -6,7 +6,7 @@
 /*   By: lkrief <lkrief@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 18:09:14 by lkrief            #+#    #+#             */
-/*   Updated: 2023/03/29 03:38:20 by lkrief           ###   ########.fr       */
+/*   Updated: 2023/06/22 15:07:37 by lkrief           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,12 +148,12 @@ bool AForm::executionRequirements( const Bureaucrat& b ) const
 
 std::ostream& operator<<( std::ostream& os, const AForm& f )
 {
-    std::string signature = (f._signature == false ? "NO" : "YES");
+    std::string signature = (f.getSignature() == false ? "NO" : "YES");
     os << f.getName()
         << std::setw(30) << std::left << "\n  signed: " << signature
-        << std::setw(30) << std::left << "\n  target: " << f._target
-        << "\n  required grade to sign:    " << f._signing_grade
-        << "\n  required grade to execute: " << f._executing_grade;
+        << std::setw(30) << std::left << "\n  target: " << f.getTarget()
+        << "\n  required grade to sign:    " << f.getSigningGrade()
+        << "\n  required grade to execute: " << f.getExecutingGrade();
     return os;
 }
 

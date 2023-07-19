@@ -120,11 +120,11 @@ void Form::beSigned( const Bureaucrat& b )
 
 std::ostream& operator<<( std::ostream& os, const Form& f )
 {
-    std::string signature = (f._signature == false ? "NO" : "YES");
+    std::string signature = (f.getSignature() == false ? "NO" : "YES");
     os << f.getName()
         << std::setw(30) << std::left << "\n  signed: " << signature
-        << "\n  required grade to sign:    " << f._signing_grade
-        << "\n  required grade to execute: " << f._executing_grade;
+        << "\n  required grade to sign:    " << f.getSigningGrade()
+        << "\n  required grade to execute: " << f.getExecutingGrade();
     return os;
 }
 

@@ -6,7 +6,7 @@
 /*   By: lkrief <lkrief@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 00:30:23 by lkrief            #+#    #+#             */
-/*   Updated: 2023/03/29 04:02:00 by lkrief           ###   ########.fr       */
+/*   Updated: 2023/06/22 15:22:45 by lkrief           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ class AForm
         virtual ~AForm();
 
         AForm& operator=( const AForm& f );
-        friend std::ostream& operator<<( std::ostream& os, const AForm& f );
 
         std::string getName() const;
         std::string getTarget() const;
@@ -67,5 +66,7 @@ class AForm
         const int _executing_grade;
 
 };
+
+std::ostream& operator<<( std::ostream& os, const AForm& f );
 
 #endif

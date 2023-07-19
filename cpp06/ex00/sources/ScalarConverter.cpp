@@ -226,7 +226,8 @@ void ScalarConverter::_convertDouble( double d )
         _charValueExist = true;
     if (d >= std::numeric_limits<int>::min() && d <= std::numeric_limits<int>::max())
         _intValueExist = true;
-    if (d >= std::numeric_limits<float>::lowest() && d <= std::numeric_limits<float>::max())
+    if ((d >= std::numeric_limits<float>::lowest() && d <= std::numeric_limits<float>::max())
+        || std::isnan(d) || std::isinf(_double))
         _floatValueExist = true;
 }
 
@@ -269,7 +270,7 @@ void ScalarConverter::_displayDouble()
 {
     std::cout << "double: ";
     if (std::isnan(_double))
-        std::cout << "nanf";
+        std::cout << "nan";
     else if (std::isinf(_double))
         std::cout << (_double > 0 ? "+inf" : "-inf");
     else

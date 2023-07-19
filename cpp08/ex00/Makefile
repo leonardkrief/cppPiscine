@@ -1,4 +1,4 @@
-NAME			=	templates
+NAME			=	easyfind
 
 DIR_SRCS		=	sources
 
@@ -12,7 +12,7 @@ OBJS			=	${addprefix ${DIR_OBJS}/, ${OBJS_NAMES}}
 OBJS_NAMES		=	${SRCS_NAMES:.cpp=.o}
 
 CC				=	c++
-CFLAGS			=	-Wall -Wextra -Werror -std=c++98
+CFLAGS			=	-Wall -Wextra -Werror -std=c++11
 CDFLAGS			=	-MM -MT
 INCLUDES		=	-Iincludes
 DEFINES			=

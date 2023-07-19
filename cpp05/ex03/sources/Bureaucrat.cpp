@@ -6,7 +6,7 @@
 /*   By: lkrief <lkrief@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 17:37:02 by lkrief            #+#    #+#             */
-/*   Updated: 2023/03/29 05:48:52 by lkrief           ###   ########.fr       */
+/*   Updated: 2023/06/22 15:24:40 by lkrief           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,8 @@ Bureaucrat& Bureaucrat::operator=( const Bureaucrat& b )
 
 std::ostream& operator<<( std::ostream& os, const Bureaucrat& b )
 {
-    std::string name = b._name + ",";
-    os << std::setw(12) << std::left << name << " bureaucrat grade " << b._grade << ".";
+    std::string name = b.getName() + ",";
+    os << std::setw(12) << std::left << name << " bureaucrat grade " << b.getGrade() << ".";
     return os;
 }
 

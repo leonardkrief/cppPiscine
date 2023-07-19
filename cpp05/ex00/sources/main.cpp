@@ -6,7 +6,7 @@
 /*   By: lkrief <lkrief@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 23:42:03 by lkrief            #+#    #+#             */
-/*   Updated: 2023/03/28 00:26:49 by lkrief           ###   ########.fr       */
+/*   Updated: 2023/06/22 14:46:01 by lkrief           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,13 +134,32 @@ void testUpGrade(void)
     }
 }
 
+void testOCN(void)
+{
+    printTitle("Orthodox canonical form test");
+    try
+    {
+        Bureaucrat bob("bob", 149);
+        Bureaucrat ava = bob;
+        std::cout << bob << std::endl;
+        std::cout << ava << std::endl;
+        std::cout << "_name member is const so I cannot initialize\
+it inside a copy constructor" << std::endl;
+    }
+    catch (std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+}
+
 int main(void)
 {
     testBasic();
     testExceptionLow();
-    testExceptionHigh();
+    testExceptionHigh();s
     testDownGrade();
     testUpGrade();
+    testOCN();
     std::cout << std::endl;
     return (0);
 }

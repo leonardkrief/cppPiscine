@@ -1,40 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   iter.hpp                                           :+:      :+:    :+:   */
+/*   easyfind.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lkrief <lkrief@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 12:25:49 by lkrief            #+#    #+#             */
-/*   Updated: 2023/06/22 23:04:19 by lkrief           ###   ########.fr       */
+/*   Updated: 2023/07/15 20:22:23 by lkrief           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ITER_HPP
-# define ITER_HPP
+#ifndef EASYFIND_HPP
+# define EASYFIND_HPP
 
 #include <iostream>
-#include <iomanip>
 #include <functional>
 
-template<typename T>
-void iter( T* addr, unsigned int N, void f( T& arg ) )
+template <typename T>
+void easyfind ( T& A, int n )
 {
-    for (unsigned int i = 0; i < N; i++)
-        f(addr[i]);
-}
-
-template<typename T, unsigned N>
-void printTab( const T (&addr)[N] )
-{
-    std::cout << "{";
-    for (unsigned int i = 0; i < N; i++)
+    auto sol = A.begin();
+    for (auto it = A.begin(); it != A.end() && *it != n; it++)
     {
-        std::cout << std::setw(3) << std::left << addr[i];
-        if (i + 1 < N)
-            std::cout << ", ";
+        sol = it;
     }
-    std::cout << "}" << std::endl;
+    if (*sol != n)
+    {
+        throw std::out_of_range("Element not found");
+    }
+    std::cout << n << " was found" << std::endl;
 }
 
 #endif

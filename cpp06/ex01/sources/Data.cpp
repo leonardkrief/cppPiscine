@@ -6,7 +6,7 @@
 /*   By: lkrief <lkrief@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 23:25:04 by lkrief            #+#    #+#             */
-/*   Updated: 2023/04/06 00:03:15 by lkrief           ###   ########.fr       */
+/*   Updated: 2023/06/22 22:07:18 by lkrief           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,10 @@ Data::Data( const Data& s )
 
 Data& Data::operator=( const Data& s )
 {
-    this->_data = s._data;
+    if (this != &s)
+    {
+        this->_data = s._data;
+    }
     if (Data::_print_log_)
     {
         std::cout << "[" << (void*)this

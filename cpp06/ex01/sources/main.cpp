@@ -57,7 +57,7 @@ static void testPtr()
     Data* dataPtr = new Data();
     uintptr_t int_Ptr = 0x0u;
 
-    printTitle("basic test");
+    printTitle("basic tests");
     BANNER_SIZE = 30;
 
     printTitle("initial state");
@@ -70,6 +70,7 @@ static void testPtr()
     std::cout << "int_ptr = " << std::showbase << std::hex << int_Ptr << std::endl;
     std::cout << "dataPtr = " << std::showbase << std::hex << dataPtr
         << "    value = " << std::dec << dataPtr->getValue() << std::endl;
+
     printTitle("uintptr_t back to data*");
     dataPtr = Serializer::deserialize(int_Ptr);
     std::cout << "int_ptr = " << std::showbase << std::hex << int_Ptr << std::endl;
@@ -85,7 +86,7 @@ static void testReallocPtr()
     Data* dataPtr = new Data();
     uintptr_t int_Ptr = 0x0u;
 
-    printTitle("realloc test");
+    printTitle("realloc tests");
     BANNER_SIZE = 30;
 
     printTitle("initial state");
@@ -109,29 +110,39 @@ static void testReallocPtr()
     BANNER_SIZE = 55;
 }
 
-// A reinterpret_cast is inherently machine dependent. Safely using
-// reinterpret_cast requires completely understanding the types involved
-// as well as the details of how the compiler implements the cast.
-static void testWarning()
-{
-    printTitle("warning test");
+// // *****************************************************************
+// // *** I should re-check this test, I forgot what I wanted to do ***
+// // *****************************************************************
 
-    char c[sizeof(double)];
-    std::memcpy(c, "\x3f\xf0\x00\x00\x00\x00\x00\x00", sizeof(double)); // Initialize with specific bytes
-    //                63  240 0   0   0   0   0   0
-    // WARNING: Undefined behavior depending on the machine, compiler and endianness
-    double* dp = reinterpret_cast<double*>(c);
 
-    int* u = reinterpret_cast<int*>(c);
-    std::cout << "Value of u[0]: " << u[0] << std::endl;
-    std::cout << "Value of u[1]: " << u[1] << std::endl;
-    std::cout << "Value of the double: " << *dp << std::endl;
-}
+// // A reinterpret_cast is inherently machine dependent. Safely using
+// // reinterpret_cast requires completely understanding the types involved
+// // as well as the details of how the compiler implements the cast.
+
+// static void testWarning()
+// {
+//     printTitle("warning tests");
+
+//     char c[sizeof(double)];
+//     std::memcpy(c, "\x3f\xf0\x00\x00\x00\x00\x00\x00", sizeof(double)); // Initialize with specific bytes
+//     //                63  240 0   0   0   0   0   0
+//     // WARNING: Undefined behavior depending on the machine, compiler and endianness
+//     double* dp = reinterpret_cast<double*>(c);
+//     int* u = reinterpret_cast<int*>(c);
+
+//     std::cout << "Value of dp: " << dp << std::endl;
+//     std::cout << "Value of  u: " << u << std::endl;
+//     std::cout << "Value of *dp: " << *dp << std::endl;
+//     std::cout << "Value of  *u: " << *u << std::endl;
+//     std::cout << "Value of u[0]: " << u[0] << std::endl;
+//     std::cout << "Value of u[1]: " << u[1] << std::endl;
+//     std::cout << "Value of the double: " << *dp << std::endl;
+// }
 
 int main()
 {
     testPtr();
     testReallocPtr();
-    testWarning();
+    // testWarning();
     exit(EXIT_SUCCESS);
 }

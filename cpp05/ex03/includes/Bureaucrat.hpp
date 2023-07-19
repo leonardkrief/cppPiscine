@@ -6,7 +6,7 @@
 /*   By: lkrief <lkrief@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 17:30:29 by lkrief            #+#    #+#             */
-/*   Updated: 2023/03/29 02:06:07 by lkrief           ###   ########.fr       */
+/*   Updated: 2023/06/22 15:23:05 by lkrief           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ class Bureaucrat
         ~Bureaucrat();
 
         Bureaucrat& operator=( const Bureaucrat& b );
-        friend std::ostream& operator<<( std::ostream& os, const Bureaucrat& b );
 
         std::string getName() const;
         int getGrade() const;
@@ -51,5 +50,7 @@ class Bureaucrat
         const std::string _name;
         int _grade;
 };
+
+std::ostream& operator<<( std::ostream& os, const Bureaucrat& b );
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: lkrief <lkrief@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 00:30:23 by lkrief            #+#    #+#             */
-/*   Updated: 2023/03/28 01:01:12 by lkrief           ###   ########.fr       */
+/*   Updated: 2023/06/22 14:48:59 by lkrief           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ class Form
         ~Form();
 
         Form& operator=( const Form& f );
-        friend std::ostream& operator<<( std::ostream& os, const Form& f );
 
         std::string getName() const;
         int getSignature() const;
@@ -57,5 +56,7 @@ class Form
         const int _executing_grade;
 
 };
+
+std::ostream& operator<<( std::ostream& os, const Form& f );
 
 #endif

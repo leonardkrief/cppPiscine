@@ -72,6 +72,21 @@ static AForm* newPresidential(const std::string target)
 	return (new PresidentialPardonForm(target));
 }
 
+// AForm* Intern::newShrubbery(const std::string& target)
+// {
+// 	return (new ShrubberyCreationForm(target));
+// }
+
+// AForm* Intern::newRobotomy(const std::string& target)
+// {
+// 	return (new RobotomyRequestForm(target));
+// }
+
+// AForm* Intern::newPresidential(const std::string& target)
+// {
+// 	return (new PresidentialPardonForm(target));
+// }
+
 static int getFormIndex( const std::string& formName )
 {
     const std::string names[3] = {

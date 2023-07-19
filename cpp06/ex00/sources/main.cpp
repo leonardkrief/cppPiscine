@@ -18,7 +18,7 @@ int main(int ac, char** av)
     int x = 1;
     if (ac == 1)
     {
-        std::cout << "No input provided. Abort...\n";
+        std::cout << "Usage:    ./convert [-v verbose] [arguments]\n";
         exit(EXIT_SUCCESS);
     }
     if (std::string(av[1]) == "-v")
@@ -39,3 +39,6 @@ int main(int ac, char** av)
     }
     exit(EXIT_SUCCESS);
 }
+
+// SUBJECT TEST
+// ./convert -v 0 nan 42.0f

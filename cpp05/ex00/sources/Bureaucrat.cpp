@@ -6,7 +6,7 @@
 /*   By: lkrief <lkrief@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 17:37:02 by lkrief            #+#    #+#             */
-/*   Updated: 2023/03/28 00:24:00 by lkrief           ###   ########.fr       */
+/*   Updated: 2023/06/22 14:38:45 by lkrief           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ void Bureaucrat::downGrade()
 
 std::ostream& operator<<( std::ostream& os, const Bureaucrat& b )
 {
-    os << b._name << ", bureaucrat grade " << b._grade << ".";
+    os << b.getName() << ", bureaucrat grade " << b.getGrade() << ".";
     return os;
 }
 
