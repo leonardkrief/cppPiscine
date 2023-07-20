@@ -6,7 +6,7 @@
 /*   By: lkrief <lkrief@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 12:25:49 by lkrief            #+#    #+#             */
-/*   Updated: 2023/07/20 23:15:50 by lkrief           ###   ########.fr       */
+/*   Updated: 2023/07/20 23:20:27 by lkrief           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ std::ostream& operator<< ( std::ostream& o, const Container<int>& container )
     return o;
 }
 
+// For more info on this template, see:
+// https://stackoverflow.com/questions/1154212/how-could-i-print-the-contents-of-any-container-in-a-generic-way
 template
   < template <typename Elem, typename Alloc=std::allocator<Elem> > class Container >
 Container<int> randomContainerOfInts ( size_t n = 10, int min = 0, int max = 20 )
