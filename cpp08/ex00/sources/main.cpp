@@ -6,7 +6,7 @@
 /*   By: lkrief <lkrief@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 12:29:14 by lkrief            #+#    #+#             */
-/*   Updated: 2023/07/15 20:37:41 by lkrief           ###   ########.fr       */
+/*   Updated: 2023/07/20 19:18:15 by lkrief           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <iostream>
 #include <iomanip>
 #include <vector>
+#include <list>
 
 const unsigned int BANNER_SIZE = 55;
 
@@ -53,24 +54,17 @@ static void printTitle(std::string title, bool toUpper = true, int banner_size =
     std::cout << std::setfill(' ');
 }
 
-void printVector(std::vector<int> A)
-{
-    std::cout << "{ ";
-    for (std::vector<int>::iterator it = A.begin(); it != A.end(); it++)
-    {
-        std::cout << *it << " ";
-    }
-    std::cout << "}" << std::endl;
-}
-
 void vectorUnitTest()
 {
     static int N = 0;
-    std::string title = "vector unit test " + std::to_string(N);
+
+    std::stringstream ss;
+    ss << N;
+    std::string title = "vector unit test " + ss.str();
     printTitle(title);
-    std::vector<int> s = {20,3,2,1,2,3,1,2};
-    printVector(s);
-    easyfind(s, 2);
+    std::list<int> s = {20,3,2,1,2,3,1,2};
+    // printVector(s);
+    easyfind(s, 1);
     N++;
 }
 

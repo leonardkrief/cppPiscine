@@ -6,7 +6,7 @@
 /*   By: lkrief <lkrief@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 12:25:49 by lkrief            #+#    #+#             */
-/*   Updated: 2023/07/15 20:22:23 by lkrief           ###   ########.fr       */
+/*   Updated: 2023/07/20 19:22:19 by lkrief           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,40 @@
 # define EASYFIND_HPP
 
 #include <iostream>
-#include <functional>
+#include <sstream>
+#include <algorithm>
+
+class ElementNotFound : public std::exception
+{
+    public:
+        const char* what() const throw() { return "Element not found";};
+};
 
 template <typename T>
-void easyfind ( T& A, int n )
+typename T::difference_type easyfind ( T& A, int value )
 {
-    auto sol = A.begin();
-    for (auto it = A.begin(); it != A.end() && *it != n; it++)
+    typename T::iterator sol = std::find(A.begin(), A.end(), value);
+    if (sol == A.end())
     {
-        sol = it;
+        throw ElementNotFound();
     }
-    if (*sol != n)
+    typename T::difference_type index = std::distance(A.begin(), sol);
+    std::cout << value << " was found at position "
+              << index << std::endl;
+    return index;
+}
+
+template <template <int>>
+
+template <typename<T>>
+void printContainer( T<int> A)
+{
+    std::cout << "{ ";
+    for (std::vector<int>::iterator it = A.begin(); it != A.end(); it++)
     {
-        throw std::out_of_range("Element not found");
+        std::cout << *it << " ";
     }
-    std::cout << n << " was found" << std::endl;
+    std::cout << "}" << std::endl;
 }
 
 #endif
