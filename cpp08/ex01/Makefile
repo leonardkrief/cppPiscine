@@ -1,10 +1,11 @@
-NAME			=	easyfind
+NAME			=	span
 
 DIR_SRCS		=	sources
 
 DIR_OBJS		=	objects
 
 SRCS_NAMES		=	main.cpp \
+					Span.cpp
 
 SRCS			=	${addprefix ${DIR_SRCS}/, ${SRCS_NAMES}}
 OBJS			=	${addprefix ${DIR_OBJS}/, ${OBJS_NAMES}}

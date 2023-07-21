@@ -6,7 +6,7 @@
 /*   By: lkrief <lkrief@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 12:25:49 by lkrief            #+#    #+#             */
-/*   Updated: 2023/07/20 23:20:27 by lkrief           ###   ########.fr       */
+/*   Updated: 2023/07/21 09:12:52 by lkrief           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,21 +19,27 @@
 #include <ctime>    // For time()
 #include <algorithm>
 
+// Important to store _message variable. Otherwise
+// the pointer returned by c_str() will be invalid after the
+// what() function returns.
 class ElementNotFound : public std::exception
 {
     private:
-        int value_;
-        mutable std::string message_; // mutable because we will change it in a const function.
+        std::string _message;
 
     public:
-        explicit ElementNotFound(int value) : value_(value), message_("") {}
+        explicit ElementNotFound(int value)
+        {
+            std::ostringstream oss;
+            oss << value << " not found";
+            _message = oss.str();
+        }
+
+        virtual ~ElementNotFound() throw() {}
 
         const char* what() const throw() 
         {
-            std::ostringstream oss;
-            oss << value_ << " not found";
-            message_ = oss.str();
-            return message_.c_str();
+            return _message.c_str();
         }
 };
 
