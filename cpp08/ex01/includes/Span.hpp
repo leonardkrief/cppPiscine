@@ -6,7 +6,7 @@
 /*   By: lkrief <lkrief@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 12:25:49 by lkrief            #+#    #+#             */
-/*   Updated: 2023/07/21 16:20:50 by lkrief           ###   ########.fr       */
+/*   Updated: 2023/07/22 11:39:07 by lkrief           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,12 @@ class Span
         Span(unsigned int n) : _max_size(n) {} ;
         Span(const Span& src) : _max_size(src._max_size), _vector(src._vector) {} ;
         ~Span() {} ;
-
         Span& operator= (const Span& src);
-        std::vector<int> getVect() const { return _vector; };
+
         void addNumber(int n);
 
         template
-        <template <typename Elem, typename Alloc=std::allocator<Elem> > class Container>
+        <template < typename Elem, typename Alloc=std::allocator<Elem> > class Container>
         void addRange(typename Container<int>::iterator start, typename Container<int>::iterator end)
         {
             for (typename Container<int>::iterator it = start; it != end; it++)
@@ -38,6 +37,7 @@ class Span
             }
         };
 
+        std::vector<int> getVect() const { return _vector; };
         void addRandoms(int n = 20, int min = -100, int max = 100);
         unsigned int shortestSpan(bool debug = false) const;
         unsigned int longestSpan(bool debug = false) const;

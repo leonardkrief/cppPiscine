@@ -6,7 +6,7 @@
 /*   By: lkrief <lkrief@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 12:25:49 by lkrief            #+#    #+#             */
-/*   Updated: 2023/07/21 13:10:42 by lkrief           ###   ########.fr       */
+/*   Updated: 2023/07/22 11:47:56 by lkrief           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,50 +42,41 @@ void Span::addNumber(int n)
 
 void Span::addRandoms(int n, int min, int max)
 {
-    std::vector<int> v;
-
     if (min > max) std::swap(min, max);
     for (int i = 0; i < n; i++)
     {
-        v.push_back(min + rand() % (max - min));
+        addNumber(min + rand() % (max - min));
     }
-    addRange<std::vector>(v.begin(), v.end());
 }
 
 
 unsigned int Span::shortestSpan(bool debug) const
 {
-    long long int span = std::numeric_limits<unsigned int>::max();
-    int i = -1;
     if (_vector.size() <= 1) throw Span::NoSpanFoundException();
+
+    long long int span = std::numeric_limits<unsigned int>::max();
+    std::vector<int> copy = _vector;
+    std::sort(copy.begin(), copy.end());
     if (debug) std::cout << "\n";
-    for (std::vector<int>::const_iterator it = _vector.cbegin(); it < _vector.cend() - 1; it++)
+
+    for (std::vector<int>::const_iterator it = copy.cbegin(); it < copy.cend() - 1 && span; it++)
     {
         long long int diff = static_cast<long long int>(*it) - static_cast<long long int>(*(it + 1));
         diff = std::abs(diff);
-        i++;
-        if (span > diff && debug) std::cout << "(" << i << ") " << (*it) << " " << *(it + 1) << " " << diff << "\n";
+        if (span > diff && debug) std::cout << *(it + 1) << " - " << *it << " = " << diff << "\n";
         span = std::min(span, diff);
     }
+
     return static_cast<unsigned int> (span);
 }
 
 unsigned int Span::longestSpan(bool debug) const
 {
-    long long int span = 0;
-    int i = -1;
     if (_vector.size() <= 1) throw Span::NoSpanFoundException();
-    if (debug) std::cout << "\n";
-    for (std::vector<int>::const_iterator it = _vector.cbegin(); it < _vector.cend() - 1; it++)
-    {
-        long long int diff = static_cast<long long int>(*it) - static_cast<long long int>(*(it + 1));
-        diff = std::abs(diff);
-        i++;
-        if (span < diff && debug) std::cout << "(" << i << ") " << (*it) << " " << *(it + 1) << " " << diff << "\n";
-        span = std::max(span, diff);
-
-    }
-    return static_cast<unsigned int> (span);
+    std::vector<int>::const_iterator min = std::min_element(_vector.cbegin(), _vector.cend());
+    std::vector<int>::const_iterator max = std::max_element(_vector.cbegin(), _vector.cend());
+    if (debug) std::cout << *max << " - " << *min << " = ";
+    return static_cast<unsigned int> (static_cast<long long int>(*max) - static_cast<long long int>(*min));
 }
 
 std::ostream& operator << (std::ostream& os, const Span& s)

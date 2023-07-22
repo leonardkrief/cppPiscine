@@ -6,7 +6,7 @@
 /*   By: lkrief <lkrief@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 12:29:14 by lkrief            #+#    #+#             */
-/*   Updated: 2023/07/21 16:46:57 by lkrief           ###   ########.fr       */
+/*   Updated: 2023/07/22 12:19:39 by lkrief           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,11 @@ void    testSubject(void)
         ++it;
     }
     std::stack <int> s(mstack);
+}
+
+void moreTests(void)
+{
+    //..
 }
 
 int main(void)
