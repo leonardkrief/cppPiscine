@@ -6,7 +6,7 @@
 /*   By: lkrief <lkrief@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 12:25:49 by lkrief            #+#    #+#             */
-/*   Updated: 2023/07/23 19:05:32 by lkrief           ###   ########.fr       */
+/*   Updated: 2023/07/24 10:19:48 by lkrief           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,26 +47,16 @@ class RPN
     public:
 
         RPN( const std::string& str ) : _str(str) {} ;
-        RPN( const RPN& src ) : _str(src._str) {} ;
         ~RPN() {} ;
-        RPN& operator= ( const RPN& src );
 
         int getRPN( bool debug = false );
 
-        class NoRPNFoundException : public std::exception
-        {
-            public:
-                const char* what() const throw();
-        };
-
     private:
+        // members
         std::string _str;
         static const std::string _operations;
 
-        RPN() : _str() {} ;
-        static bool nextToken( std::istringstream& iss, std::string& token );
-        static bool validToken( std::string& token );
-
+        // operators map
         typedef int (*rpnOp) (int, int);
         std::map<char, rpnOp> _operatorMap;
         static int add ( int a, int b ) { return a + b; };
@@ -80,7 +70,14 @@ class RPN
             _operatorMap['*'] = &RPN::mul;
             _operatorMap['/'] = &RPN::div;
         }
-        
+
+        // features
+        RPN() : _str() {} ;
+        RPN( const RPN& src ) : _str(src._str) {} ;
+        RPN& operator= ( const RPN& src );
+
+        static bool nextToken( std::istringstream& iss, std::string& token );
+        static bool validToken( std::string& token );
 };
 
 std::ostream& operator << ( std::ostream& os, const std::stack<int>& s );
