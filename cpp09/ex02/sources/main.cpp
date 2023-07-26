@@ -6,7 +6,7 @@
 /*   By: lkrief <lkrief@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 12:29:14 by lkrief            #+#    #+#             */
-/*   Updated: 2023/07/26 01:03:05 by lkrief           ###   ########.fr       */
+/*   Updated: 2023/07/26 03:36:57 by lkrief           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ int main(int ac, char**av)
     {
         std::string input(str);
         Pmerge m(input);
-        tests(m, false);
+        tests(m);
     }
     catch(const std::exception& e)
     {

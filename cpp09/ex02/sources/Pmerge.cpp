@@ -6,7 +6,7 @@
 /*   By: lkrief <lkrief@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 12:29:14 by lkrief            #+#    #+#             */
-/*   Updated: 2023/07/26 01:04:42 by lkrief           ###   ########.fr       */
+/*   Updated: 2023/07/26 03:40:33 by lkrief           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,15 +163,24 @@ std::vector<int> Pmerge::vectorSort()
 
     if (sorted[0] == -1) sorted.erase(sorted.cbegin());
     
-    // setSorted(sorted);
+    setSorted(sorted);
     return sorted;
 }
 
 void Pmerge::mergeVectors(std::vector<int>& sorted, const std::vector<int>& ordered)
 {
+    int g_size = 2, pow = 4, q = 0;
+    std::vector<int>::iterator bound;
     for (std::vector<int>::const_iterator it = ordered.cbegin(); it < ordered.cend(); it++)
     {
-        sorted.insert(std::lower_bound(sorted.begin(), sorted.end(), *it), *it);
+        bound = std::min(sorted.begin() + pow, sorted.end());
+        sorted.insert(std::lower_bound(sorted.begin(), bound, *it), *it);
+        if (++q == g_size)
+        {
+            g_size = pow - g_size;
+            pow *= 2;
+            q = 0;
+        }
         if (_debug) std::cout << DEBUG_TEXT_COLOR "inserted " << *it << ": " << DEBUG_OBJECTS_COLOR << sorted << std::endl << std::endl << RESET;
     }
 }
@@ -214,15 +223,13 @@ std::deque<int> Pmerge::orderPairsDeque( std::deque< std::pair<int,int> >& pairs
     for (std::deque< std::pair<int,int> >::const_iterator it = pairs.cbegin(); it < pairs.cend(); )
     {
         border = it;
-        std::advance(it, g_size);
+        it += g_size;
         if (it > pairs.cend()) it = pairs.cend();
 
         std::deque<int> temp;
         for(std::deque< std::pair<int,int> >::const_iterator i = border; i < it; ++i) temp.push_front(i->first);
         v.insert(v.cend(), temp.cbegin(), temp.cend());
         
-        std::advance(border, g_size);
-        it = border;
         g_size = pow - g_size;
         pow *= 2;
     }
@@ -232,10 +239,18 @@ std::deque<int> Pmerge::orderPairsDeque( std::deque< std::pair<int,int> >& pairs
 
 void Pmerge::mergeDeques(std::deque<int>& sorted, const std::deque<int>& arr) const
 {
+    int g_size = 2, pow = 4, q = 0;
+    std::deque<int>::iterator bound;
     for (std::deque<int>::const_iterator it = arr.begin(); it != arr.end(); it++)
     {
-        std::deque<int>::iterator pos = std::lower_bound(sorted.begin(), sorted.end(), *it);
-        sorted.insert(pos, *it);
+        bound = std::min(sorted.begin() + pow, sorted.end());
+        sorted.insert(std::lower_bound(sorted.begin(), bound, *it), *it);
+        if (++q == g_size)
+        {
+            g_size = pow - g_size;
+            pow *= 2;
+            q = 0;
+        }
         if (_debug) std::cout << DEBUG_TEXT_COLOR "inserted " << *it << ": " << DEBUG_OBJECTS_COLOR << sorted << std::endl << std::endl << RESET;
     }
 }
