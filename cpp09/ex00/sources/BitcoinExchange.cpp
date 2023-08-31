@@ -6,7 +6,7 @@
 /*   By: lkrief <lkrief@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 12:39:09 by lkrief            #+#    #+#             */
-/*   Updated: 2023/08/31 15:45:22 by lkrief           ###   ########.fr       */
+/*   Updated: 2023/08/31 15:47:07 by lkrief           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,7 @@ std::map<BitcoinExchange::Date, BitcoinExchange::PriceHistory::BitcoinRate>
     std::map<BitcoinExchange::Date, BitcoinExchange::PriceHistory::BitcoinRate> history;
     std::string line;
     if (std::getline(fstrm, line) && line == "date | value")
-    {~~
+    {
         while (std::getline(fstrm, line))
         {
             std::istringstream iss(line);
@@ -225,7 +225,7 @@ BitcoinExchange::Date BitcoinExchange::parseDate( std::string& date_str )
 {
     std::ostringstream oss;
 
-    if (!std::isblank(date_str.back()))
+    if (!isblank(date_str.back()))
     {
         oss << "DATE: missing end space => '" << date_str << "'" << RESET;
         throw std::runtime_error(oss.str());
@@ -246,7 +246,7 @@ BitcoinExchange::BtcAmmount BitcoinExchange::parseBtcAmmount( std::string& btc_s
 {
     std::ostringstream oss;
 
-    if(!std::isblank(btc_str[0]))
+    if(!isblank(btc_str[0]))
         oss << "BTC: missing first space => '" << btc_str << "'";
     else if (btc_str.size() > 13)
         oss << "BTC: input too long => '" << btc_str << "'";
