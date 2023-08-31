@@ -6,7 +6,7 @@
 /*   By: lkrief <lkrief@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 12:39:09 by lkrief            #+#    #+#             */
-/*   Updated: 2023/07/23 15:45:10 by lkrief           ###   ########.fr       */
+/*   Updated: 2023/08/31 15:45:22 by lkrief           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,11 +113,11 @@ void BitcoinExchange::Date::parseDate(const std::string& date)
         && (tm.tm_year >= 0) && (tm.tm_mon >= 0) && (tm.tm_mday >= 1);
 }
 
-               /**/
-      /********************/
-/* PriceHistory subclass */
-      /********************/
-               /**/
+            /**/
+    /********************/
+/** PriceHistory subclass **/
+    /********************/
+            /**/
 
 BitcoinExchange::PriceHistory& BitcoinExchange::PriceHistory::operator= ( const PriceHistory& src )
 {
@@ -163,36 +163,39 @@ std::map<BitcoinExchange::Date, BitcoinExchange::PriceHistory::BitcoinRate>
 
     std::map<BitcoinExchange::Date, BitcoinExchange::PriceHistory::BitcoinRate> history;
     std::string line;
-    while (std::getline(fstrm, line))
-    {
-        std::istringstream iss(line);
-    
-        // extracting the date
-        std::string date_str;
-        if (!std::getline(iss, date_str, ','))
+    if (std::getline(fstrm, line) && line == "date | value")
+    {~~
+        while (std::getline(fstrm, line))
         {
-            continue;
-        }
-        Date date(date_str);
-        if (!date.good())
-        {
-            continue;
-        }
+            std::istringstream iss(line);
+        
+            // extracting the date
+            std::string date_str;
+            if (!std::getline(iss, date_str, ','))
+            {
+                continue;
+            }
+            Date date(date_str);
+            if (!date.good())
+            {
+                continue;
+            }
 
-        // extracting the rate
-        std::string rate_str;
-        if (!std::getline(iss, rate_str))
-        {
-            continue;
-        }
-        BitcoinExchange::PriceHistory::BitcoinRate rate;
-        std::istringstream ss(rate_str);
-        if (!(ss >> rate))
-        {
-            continue;
-        }
+            // extracting the rate
+            std::string rate_str;
+            if (!std::getline(iss, rate_str))
+            {
+                continue;
+            }
+            BitcoinExchange::PriceHistory::BitcoinRate rate;
+            std::istringstream ss(rate_str);
+            if (!(ss >> rate))
+            {
+                continue;
+            }
 
-        history.insert(std::make_pair(date, rate));
+            history.insert(std::make_pair(date, rate));
+        }
     }
     return history;
 }
