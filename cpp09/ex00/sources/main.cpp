@@ -6,7 +6,7 @@
 /*   By: lkrief <lkrief@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 12:29:14 by lkrief            #+#    #+#             */
-/*   Updated: 2023/07/23 15:32:08 by lkrief           ###   ########.fr       */
+/*   Updated: 2023/09/04 13:11:37 by lkrief           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,18 +107,18 @@
 //         BitcoinExchange::Date d(it->first);
 //         if (verbose)
 //         {
-//             std::cout << (d.good() == it->second ? GREEN "PASS" : RED "FAIL")
+//             std::cout << (d.good() == it->second ? GREEN "PASS" : BOLDRED "FAIL")
 //                 << ": " << (it->second ? GREEN : RED) << "'" << it->first << "'\n" << RESET;
 //         }
 //         if (!verbose && (d.good() != it->second))
 //         {
-//             std::cout << RED << "'" << it->first << "' supposed to be "
+//             std::cout << BOLDRED << "'" << it->first << "' supposed to be "
 //                 << (it->second ? "TRUE\n" : "FALSE\n") << RESET;
 //             pass++;
 //         }
 //     }
 //     if (!pass) std::cout << GREEN << "ALL TESTS PASSED\n" << RESET;
-//     else std::cout << RED << pass << " TESTS FAILED\n" << RESET;
+//     else std::cout << BOLDRED << pass << " TESTS FAILED\n" << RESET;
 //     return pass;
 // }
 
@@ -166,23 +166,23 @@
 
 //         if (verbose)
 //         {
-//             std::cout << ((result == expected) ? GREEN "PASS" : RED "FAIL")
+//             std::cout << ((result == expected) ? GREEN "PASS" : BOLDRED "FAIL")
 //                 << ": '" << std::get<0>(test) << "' " << op << " '" << std::get<1>(test) << "' should be "
 //                 << (expected ? "true" : "false") << "\n" << RESET;
 //         }
 //         if (result != expected)
 //         {
-//             std::cout << RED << "'" << it->first << "' supposed to be "
+//             std::cout << BOLDRED << "'" << it->first << "' supposed to be "
 //                 << (it->second ? "TRUE\n" : "FALSE\n") << RESET;
 //             pass++;
 //         }
 //     }
 //     if (!pass) std::cout << GREEN << "ALL TESTS PASSED\n" << RESET;
-//     else std::cout << RED << pass << " TESTS FAILED\n" << RESET;
+//     else std::cout << BOLDRED << pass << " TESTS FAILED\n" << RESET;
 //     return pass;
 // }
 
-static const BitcoinExchange::PriceHistory::File PRICE_HISTORY = "samples/data.csv";
+static const BitcoinExchange::PriceHistory::File PRICE_HISTORY = "/mnt/nfs/homes/lkrief/42/cppPiscine/cpp09/ex00/samples/data.csv";
 
 int main(int ac, char **av)
 {
@@ -196,7 +196,11 @@ int main(int ac, char **av)
         }
         catch(const std::exception& e)
         {
-            std::cerr << RED << e.what() << '\n' << RESET;
+            std::cerr << BOLDRED << e.what() << '\n' << RESET;
         }
+    }
+    else
+    {
+        std::cerr << "Usage:  ./btc samples/your_sample.txt\n";
     }
 }

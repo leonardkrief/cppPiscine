@@ -6,7 +6,7 @@
 /*   By: lkrief <lkrief@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 12:39:09 by lkrief            #+#    #+#             */
-/*   Updated: 2023/08/31 15:47:07 by lkrief           ###   ########.fr       */
+/*   Updated: 2023/09/05 12:30:57 by lkrief           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,22 @@
 #include <iostream>
 #include <fstream>
 #include <ctime>
+#include <limits>
+#include <iomanip>
 
                /**/
       /********************/
 /******** Date subclass ********/
       /********************/
                /**/
+
+BitcoinExchange::Date::Date( const char* s ) : _date(s) { parseDate(_date); }
+
+BitcoinExchange::Date::Date( const std::string& s ) : _date(s) { parseDate(_date); }
+
+BitcoinExchange::Date::Date( const Date& d ) : _date(d._date), _valid(d._valid), _y (d._y), _m (d._m), _d (d._d) {}
+
+BitcoinExchange::Date::~Date() {}
 
 BitcoinExchange::Date& BitcoinExchange::Date::operator= ( const Date& src )
 {
@@ -69,6 +79,9 @@ std::ostream& operator<< ( std::ostream& os, const BitcoinExchange::Date& date )
     os << date.getDate();
     return os;
 }
+
+bool BitcoinExchange::Date::good() const { return _valid; };
+std::string BitcoinExchange::Date::getDate() const { return _date; };
 
 int BitcoinExchange::Date::parseToken(std::string& token, unsigned int len)
 {
@@ -119,6 +132,11 @@ void BitcoinExchange::Date::parseDate(const std::string& date)
     /********************/
             /**/
 
+BitcoinExchange::PriceHistory::PriceHistory() : _file(""), _history(parseFile("")) {};
+BitcoinExchange::PriceHistory::PriceHistory( const File file ) : _file(file), _history(parseFile(_file)) {};
+BitcoinExchange::PriceHistory::PriceHistory( const PriceHistory& bph ) : _file(bph._file), _history(bph._history) {};
+BitcoinExchange::PriceHistory::~PriceHistory() {};
+
 BitcoinExchange::PriceHistory& BitcoinExchange::PriceHistory::operator= ( const PriceHistory& src )
 {
     if (this != &src)
@@ -163,8 +181,17 @@ std::map<BitcoinExchange::Date, BitcoinExchange::PriceHistory::BitcoinRate>
 
     std::map<BitcoinExchange::Date, BitcoinExchange::PriceHistory::BitcoinRate> history;
     std::string line;
-    if (std::getline(fstrm, line) && line == "date | value")
+    std::ostringstream oss;
+
+    try
     {
+        oss.str("");
+        oss.clear();
+        if (!std::getline(fstrm, line) || line != "date,exchange_rate")
+        {
+            oss << BOLDRED << "Price History invalid format: first line should be 'date,exchange_rate'." << RESET;
+            throw std::runtime_error(oss.str());
+        }
         while (std::getline(fstrm, line))
         {
             std::istringstream iss(line);
@@ -197,6 +224,10 @@ std::map<BitcoinExchange::Date, BitcoinExchange::PriceHistory::BitcoinRate>
             history.insert(std::make_pair(date, rate));
         }
     }
+    catch (std::runtime_error& e)
+    {
+        std::cerr << BOLDRED << e.what() << RESET;
+    }
     return history;
 }
 
@@ -205,6 +236,12 @@ std::map<BitcoinExchange::Date, BitcoinExchange::PriceHistory::BitcoinRate>
 /* BitcoinExchange subclass */
       /********************/
                /**/
+
+BitcoinExchange::BitcoinExchange() : _bph(""), _file("") {};
+BitcoinExchange::BitcoinExchange(const PriceHistory::File ph_file) : _bph(PriceHistory(ph_file)), _file("") {};
+BitcoinExchange::BitcoinExchange(const PriceHistory::File ph_file, const EvaluationFile eval_file) : _bph(PriceHistory(ph_file)), _file(eval_file) {};
+BitcoinExchange::BitcoinExchange( const BitcoinExchange& src ) : _bph(src._bph), _file(src._file) {};
+BitcoinExchange::~BitcoinExchange() {};
 
 BitcoinExchange& BitcoinExchange::operator= ( const BitcoinExchange& src )
 {
@@ -216,16 +253,21 @@ BitcoinExchange& BitcoinExchange::operator= ( const BitcoinExchange& src )
     return *this;
 }
 
-bool BitcoinExchange::skipLine( const std::string& line )
+bool BitcoinExchange::checkHeader( const std::string& line )
 {
-    return (line == "date | value" || line == "" ? true : false) ;
+    return (line == "date | value" ? true : false) ;
+}
+
+bool BitcoinExchange::checkBlankLine( const std::string& line )
+{
+    return (line == "" ? true : false) ;
 }
 
 BitcoinExchange::Date BitcoinExchange::parseDate( std::string& date_str )
 {
     std::ostringstream oss;
 
-    if (!isblank(date_str.back()))
+    if (!isblank(date_str[date_str.size() - 1]))
     {
         oss << "DATE: missing end space => '" << date_str << "'" << RESET;
         throw std::runtime_error(oss.str());
@@ -263,9 +305,9 @@ BitcoinExchange::BtcAmmount BitcoinExchange::parseBtcAmmount( std::string& btc_s
     {
         std::string remaining;
         std::getline(iss, remaining);
-        oss << "BTC: unexpected remains => '" << remaining << "'";
+        oss << "BTC: unexpected remainings => '" << remaining << "'";
     }
-    else if (btc > std::numeric_limits<int>::max())
+    else if (btc > 1000)
         oss << "BTC: number too large => '" << std::setprecision(12) << btc << "'";
     if (oss.str().size()) throw std::runtime_error(oss.str());
 
@@ -279,46 +321,68 @@ void BitcoinExchange::evaluate(bool debug) const
 
     std::string line;
     std::ostringstream oss;
-    while (std::getline(fstrm, line))
+
+    try
     {
         oss.str("");
         oss.clear();
-        try
+        if (!std::getline(fstrm, line) || !checkHeader(line))
         {
-            if (skipLine(line)) continue;
-            std::istringstream ss(line);
-            if (debug) std::cout << "'" << std::left << std::setw(29) << (line + "'");
-
-            // Checking the date
-            std::string date_str;
-            if (!std::getline(ss, date_str, '|'))
+            oss << BOLDRED << "Invalid format: first line should be 'date | value'." << RESET;
+            throw std::runtime_error(oss.str());
+        }
+        while (std::getline(fstrm, line))
+        {
+            oss.str("");
+            oss.clear();
+            try
             {
-                oss << "DATE: unexpected parsing error.";
-                throw std::runtime_error(oss.str());
-            }
-            Date date(parseDate(date_str));
+                std::istringstream ss(line);
 
-            // Checking the btc number
-            std::string btc_str;
-            if (!std::getline(ss, btc_str))
+                // Checking blank line
+                if (checkBlankLine(line))
+                {
+                    continue;
+                }
+
+                // Print if debug mode ON
+                if (debug) std::cout << std::left << std::setw(29) << line;
+
+                // Checking the date
+                std::string date_str;
+                if (!std::getline(ss, date_str, '|'))
+                {
+                    oss << "DATE: unexpected parsing error.";
+                    throw std::runtime_error(oss.str());
+                }
+                Date date(parseDate(date_str));
+
+                // Checking the btc number
+                std::string btc_str;
+                if (!std::getline(ss, btc_str))
+                {
+                    oss << "BTC: unexpected parsing error.";
+                    throw std::runtime_error(oss.str());
+                }
+                BtcAmmount btc(parseBtcAmmount(btc_str));
+
+                BitcoinExchange::PriceHistory::BitcoinRate rate = _bph.getClosestRate(date);
+
+                std::cout << BOLDGREEN << date << " => " << btc << " * " << rate << " = "
+                    << std::setprecision(12) << btc * rate << "\n" << RESET;
+            }
+            catch (const std::range_error& e)
             {
-                oss << "BTC: unexpected parsing error.";
-                throw std::runtime_error(oss.str());
+                std::cerr << BOLDRED << e.what() << '\n' << RESET;
             }
-            BtcAmmount btc(parseBtcAmmount(btc_str));
-
-            BitcoinExchange::PriceHistory::BitcoinRate rate = _bph.getClosestRate(date);
-
-            std::cout << GREEN << date << " => " << btc << " = "
-                << std::setprecision(12) << btc * rate << "\n" << RESET;
+            catch (const std::exception& e)
+            {
+                std::cerr << BOLDRED << e.what() << '\n' << RESET;
+            }
         }
-        catch (const std::range_error& e)
-        {
-            std::cerr << RED << e.what() << '\n' << RESET;
-        }
-        catch (const std::exception& e)
-        {
-            std::cerr << RED << e.what() << '\n' << RESET;
-        }
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << BOLDRED << e.what() << '\n' << RESET;
     }
 }

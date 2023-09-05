@@ -6,7 +6,7 @@
 /*   By: lkrief <lkrief@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 12:25:49 by lkrief            #+#    #+#             */
-/*   Updated: 2023/07/23 15:30:52 by lkrief           ###   ########.fr       */
+/*   Updated: 2023/09/04 13:15:35 by lkrief           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,10 @@ class BitcoinExchange
         class Date
         {
             public:
-                Date( const char* s ) : _date(s) { parseDate(_date); };
-                Date( const std::string s = "") : _date(s) { parseDate(_date); };
-                Date( const Date& d ) : _date(d._date), _valid(d._valid), _y (d._y), _m (d._m), _d (d._d) {};
-                ~Date() {};
+                Date( const char* s );
+                Date( const std::string& s = "" );
+                Date( const Date& d );
+                ~Date();
                 Date& operator= ( const Date& src );
     
                 bool operator== ( const Date& src ) const;
@@ -61,8 +61,8 @@ class BitcoinExchange
                 bool operator> ( const Date& src ) const;
                 bool operator>= ( const Date& src ) const;
 
-                bool good() const { return _valid; };
-                std::string getDate() const { return _date; };
+                bool good() const;
+                std::string getDate() const;
 
             private:
                 std::string _date;
@@ -83,10 +83,10 @@ class BitcoinExchange
                 typedef double BitcoinRate;
                 typedef std::string File;
 
-                PriceHistory() : _file(""), _history(parseFile("")) {};
-                PriceHistory( const File file ) : _file(file), _history(parseFile(_file)) {};
-                PriceHistory( const PriceHistory& bph ) : _file(bph._file), _history(bph._history) {};
-                ~PriceHistory() {};
+                PriceHistory();
+                PriceHistory( const File file );
+                PriceHistory( const PriceHistory& bph );
+                ~PriceHistory();
                 PriceHistory& operator= ( const PriceHistory& src );
 
                 BitcoinRate getClosestRate( const Date& d ) const;
@@ -102,11 +102,11 @@ class BitcoinExchange
         typedef std::string EvaluationFile;
         typedef double BtcAmmount;
 
-        BitcoinExchange() : _bph(""), _file("") {};
-        BitcoinExchange(const PriceHistory::File ph_file) : _bph(PriceHistory(ph_file)), _file("") {};
-        BitcoinExchange(const PriceHistory::File ph_file, const EvaluationFile eval_file) : _bph(PriceHistory(ph_file)), _file(eval_file) {};
-        BitcoinExchange( const BitcoinExchange& src ) : _bph(src._bph), _file(src._file) {};
-        ~BitcoinExchange() {};
+        BitcoinExchange();
+        BitcoinExchange(const PriceHistory::File ph_file);
+        BitcoinExchange(const PriceHistory::File ph_file, const EvaluationFile eval_file);
+        BitcoinExchange( const BitcoinExchange& src );
+        ~BitcoinExchange();
         BitcoinExchange& operator= ( const BitcoinExchange& src );
 
         void evaluate(bool debug = false) const;
@@ -115,7 +115,8 @@ class BitcoinExchange
         PriceHistory _bph;
         EvaluationFile _file;
 
-        static bool skipLine( const std::string& line );
+        static bool checkHeader( const std::string& line );
+        static bool checkBlankLine( const std::string& line );
         static Date parseDate( std::string& date_str );
         static double parseBtcAmmount( std::string& btc_str );
 
