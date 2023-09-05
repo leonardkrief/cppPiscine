@@ -6,7 +6,7 @@
 /*   By: lkrief <lkrief@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 12:25:49 by lkrief            #+#    #+#             */
-/*   Updated: 2023/07/23 19:13:00 by lkrief           ###   ########.fr       */
+/*   Updated: 2023/09/05 15:45:20 by lkrief           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,19 @@
 #include <sstream>
 
 const std::string RPN::_operations = "+-*/";
+std::map<char, RPN::rpnOp> RPN::_operatorMap;
 
+
+RPN::RPN() : _str() {} ;
+RPN::RPN( const RPN& src ) : _str(src._str) {} ;
+RPN::RPN( const std::string& str ) : _str(str) {} ;
+RPN::~RPN() {} ;
 RPN& RPN::operator= ( const RPN& src )
 {
     if (this != &src) _str = src._str;
     return *this;
 }
+
 
 int RPN::getRPN( bool debug )
 {
@@ -73,6 +80,21 @@ int RPN::getRPN( bool debug )
     return stax.top();
 }
 
+int RPN::add ( int a, int b ) { return a + b; };
+
+int RPN::sub ( int a, int b ) { return a - b; };
+
+int RPN::mul ( int a, int b ) { return a * b; };
+
+int RPN::div ( int a, int b ) { return a / b; };
+
+void RPN::initOperatorMap()
+{
+    _operatorMap['+'] = &RPN::add;
+    _operatorMap['-'] = &RPN::sub;
+    _operatorMap['*'] = &RPN::mul;
+    _operatorMap['/'] = &RPN::div;
+}
 
 bool RPN::nextToken( std::istringstream& iss, std::string& token )
 {

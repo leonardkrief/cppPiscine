@@ -6,7 +6,7 @@
 /*   By: lkrief <lkrief@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 12:25:49 by lkrief            #+#    #+#             */
-/*   Updated: 2023/07/24 10:19:48 by lkrief           ###   ########.fr       */
+/*   Updated: 2023/09/05 15:43:54 by lkrief           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,14 @@
  /********/
 class RPN
 {
-    public:
+    private:
+        RPN();
+        RPN( const RPN& src );
+        RPN& operator= ( const RPN& src );
 
-        RPN( const std::string& str ) : _str(str) {} ;
-        ~RPN() {} ;
+    public:
+        RPN( const std::string& str );
+        ~RPN();
 
         int getRPN( bool debug = false );
 
@@ -56,47 +60,21 @@ class RPN
         std::string _str;
         static const std::string _operations;
 
-        // operators map
-        typedef int (*rpnOp) (int, int);
-        std::map<char, rpnOp> _operatorMap;
-        static int add ( int a, int b ) { return a + b; };
-        static int sub ( int a, int b ) { return a - b; };
-        static int mul ( int a, int b ) { return a * b; };
-        static int div ( int a, int b ) { return a / b; };
-        void initOperatorMap()
-        {
-            _operatorMap['+'] = &RPN::add;
-            _operatorMap['-'] = &RPN::sub;
-            _operatorMap['*'] = &RPN::mul;
-            _operatorMap['/'] = &RPN::div;
-        }
-
-        // features
-        RPN() : _str() {} ;
-        RPN( const RPN& src ) : _str(src._str) {} ;
-        RPN& operator= ( const RPN& src );
-
+        //features
         static bool nextToken( std::istringstream& iss, std::string& token );
         static bool validToken( std::string& token );
+
+        // operators map
+        typedef int (*rpnOp) (int, int);
+        static std::map<char, rpnOp> _operatorMap;
+
+        static int add ( int a, int b );
+        static int sub ( int a, int b );
+        static int mul ( int a, int b );
+        static int div ( int a, int b );
+        static void initOperatorMap();
 };
 
 std::ostream& operator << ( std::ostream& os, const std::stack<int>& s );
 
 #endif
-
-
-/*
-
-./RPN "8 9 * 9 - 9 - 9 - 4 - 1 +"
-42
-
-./RPN "7 7 * 7 -"
-42
-
-./RPN "1 2 * 2 / 2 * 2 4 - +"
-0
-
-./RPN "(1 + 1)"
-Error
-
-*/
