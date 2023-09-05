@@ -6,6 +6,7 @@ DIR_OBJS		=	objects
 
 SRCS_NAMES		=	main.cpp \
 					Pmerge.cpp \
+					so.cpp \
 
 SRCS			=	${addprefix ${DIR_SRCS}/, ${SRCS_NAMES}}
 OBJS			=	${addprefix ${DIR_OBJS}/, ${OBJS_NAMES}}
