@@ -6,7 +6,7 @@
 /*   By: lkrief <lkrief@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 12:25:49 by lkrief            #+#    #+#             */
-/*   Updated: 2023/07/26 00:56:20 by lkrief           ###   ########.fr       */
+/*   Updated: 2023/09/06 11:57:11 by lkrief           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ std::ostream& operator<<(std::ostream& oss, const std::pair<T1, T2>& p) {
 template <class T1>
 std::ostream& operator<<(std::ostream& oss, const std::vector<T1>& v) {
     std::cout << "[";
-    for (typename std::vector<T1>::const_iterator it = v.cbegin(); it != v.cend();it++)
+    for (typename std::vector<T1>::const_iterator it = v.begin(); it != v.end();it++)
     {
         oss << " " << *it;
     }
@@ -107,7 +107,7 @@ std::ostream& operator<<(std::ostream& oss, const std::vector<T1>& v) {
 template <class T1>
 std::ostream& operator<<(std::ostream& oss, const std::deque<T1>& v) {
     std::cout << "[";
-    for (typename std::deque<T1>::const_iterator it = v.cbegin(); it != v.cend();it++)
+    for (typename std::deque<T1>::const_iterator it = v.begin(); it != v.end();it++)
     {
         oss << " " << *it;
     }

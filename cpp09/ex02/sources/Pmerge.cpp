@@ -6,7 +6,7 @@
 /*   By: lkrief <lkrief@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 12:29:14 by lkrief            #+#    #+#             */
-/*   Updated: 2023/07/26 03:40:33 by lkrief           ###   ########.fr       */
+/*   Updated: 2023/09/06 11:58:03 by lkrief           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,11 +124,11 @@ std::vector<int> Pmerge::orderPairsVector( std::vector< std::pair<int,int> >& pa
     std::vector<int> v;
     std::vector< std::pair<int,int> >::const_iterator border;
 
-    for (std::vector< std::pair<int,int> >::const_iterator it = pairs.cbegin(); it < pairs.cend(); )
+    for (std::vector< std::pair<int,int> >::const_iterator it = pairs.begin(); it < pairs.end(); )
     {
         border = it;
         it = border + g_size;
-        if (it >= pairs.cend()) it = pairs.cend();
+        if (it >= pairs.end()) it = pairs.end();
         while (--it >= border) v.push_back((*it).first);
         it = border + g_size;
         g_size = pow - g_size;
@@ -148,11 +148,11 @@ std::vector<int> Pmerge::vectorSort()
     // creates the array of second elements + first pair's first element
     // deletes then the first pair from the pairs array because it is dealt with
     sorted.push_back(pairs[0].first);
-    for (std::vector< std::pair<int,int> >::const_iterator it = pairs.cbegin(); it != pairs.cend(); it++)
+    for (std::vector< std::pair<int,int> >::const_iterator it = pairs.begin(); it != pairs.end(); it++)
     {
         sorted.push_back((*it).second);
     }
-    pairs.erase(pairs.cbegin());
+    pairs.erase(pairs.begin());
 
     if (_debug) std::cout << DEBUG_TEXT_COLOR << "new pairs: " << DEBUG_OBJECTS_COLOR << pairs << std::endl << RESET
         << DEBUG_TEXT_COLOR << "first-step sorted: " << DEBUG_OBJECTS_COLOR << sorted << std::endl << RESET;
@@ -161,7 +161,7 @@ std::vector<int> Pmerge::vectorSort()
 
     mergeVectors(sorted, ordered);
 
-    if (sorted[0] == -1) sorted.erase(sorted.cbegin());
+    if (sorted[0] == -1) sorted.erase(sorted.begin());
     
     setSorted(sorted);
     return sorted;
@@ -171,7 +171,7 @@ void Pmerge::mergeVectors(std::vector<int>& sorted, const std::vector<int>& orde
 {
     int g_size = 2, pow = 4, q = 0;
     std::vector<int>::iterator bound;
-    for (std::vector<int>::const_iterator it = ordered.cbegin(); it < ordered.cend(); it++)
+    for (std::vector<int>::const_iterator it = ordered.begin(); it < ordered.end(); it++)
     {
         bound = std::min(sorted.begin() + pow, sorted.end());
         sorted.insert(std::lower_bound(sorted.begin(), bound, *it), *it);
@@ -220,15 +220,15 @@ std::deque<int> Pmerge::orderPairsDeque( std::deque< std::pair<int,int> >& pairs
     std::deque<int> v;
     std::deque< std::pair<int,int> >::const_iterator border;
 
-    for (std::deque< std::pair<int,int> >::const_iterator it = pairs.cbegin(); it < pairs.cend(); )
+    for (std::deque< std::pair<int,int> >::const_iterator it = pairs.begin(); it < pairs.end(); )
     {
         border = it;
         it += g_size;
-        if (it > pairs.cend()) it = pairs.cend();
+        if (it > pairs.end()) it = pairs.end();
 
         std::deque<int> temp;
         for(std::deque< std::pair<int,int> >::const_iterator i = border; i < it; ++i) temp.push_front(i->first);
-        v.insert(v.cend(), temp.cbegin(), temp.cend());
+        v.insert(v.end(), temp.begin(), temp.end());
         
         g_size = pow - g_size;
         pow *= 2;
@@ -265,11 +265,11 @@ std::deque<int> Pmerge::dequeSort() const
     // creates the array of second elements + first pair's first element
     // deletes then the first pair from the pairs array because it is dealt with
     sorted.push_back(pairs[0].first);
-    for (std::deque< std::pair<int,int> >::const_iterator it = pairs.cbegin(); it != pairs.cend(); it++)
+    for (std::deque< std::pair<int,int> >::const_iterator it = pairs.begin(); it != pairs.end(); it++)
     {
         sorted.push_back((*it).second);
     }
-    pairs.erase(pairs.cbegin());
+    pairs.erase(pairs.begin());
 
     if (_debug) std::cout << DEBUG_TEXT_COLOR << "new pairs: " << DEBUG_OBJECTS_COLOR << pairs << std::endl << RESET
         << DEBUG_TEXT_COLOR << "first-step sorted: " << DEBUG_OBJECTS_COLOR << sorted << std::endl << RESET;
@@ -278,6 +278,6 @@ std::deque<int> Pmerge::dequeSort() const
 
     mergeDeques(sorted, ordered);
 
-    if (sorted[0] == -1) sorted.erase(sorted.cbegin());
+    if (sorted[0] == -1) sorted.erase(sorted.begin());
     return sorted;
 }

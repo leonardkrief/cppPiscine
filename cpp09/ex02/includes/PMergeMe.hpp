@@ -1,6 +1,14 @@
 #ifndef PMERGEME_HPP
 # define PMERGEME_HPP
 
+# include <list>
+# include <vector>
+# include <algorithm>
+# include <iterator>
+
+template<typename RandomAccessIterator, typename Compare>
+void merge_insertion_sort(RandomAccessIterator first, RandomAccessIterator last, Compare compare);
+
 ////////////////////////////////////////////////////////////
 // Iterator used to sort views of the collection
 template<typename Iterator>
@@ -13,30 +21,31 @@ class group_iterator
     public:
         ////////////////////////////////////////////////////////////
         // Public types
-
-        using iterator_category = std::random_access_iterator_tag;
-        using iterator_type     = Iterator;
-        using value_type        = typename std::iterator_traits<Iterator>::value_type;
-        using difference_type   = typename std::iterator_traits<Iterator>::difference_type;
-        using pointer           = typename std::iterator_traits<Iterator>::pointer;
-        using reference         = typename std::iterator_traits<Iterator>::reference;
+        typedef std::random_access_iterator_tag iterator_category;
+        typedef Iterator iterator_type;
+        typedef typename std::iterator_traits<Iterator>::value_type value_type;
+        typedef typename std::iterator_traits<Iterator>::difference_type difference_type;
+        typedef typename std::iterator_traits<Iterator>::pointer pointer;
+        typedef typename std::iterator_traits<Iterator>::reference reference;
 
         ////////////////////////////////////////////////////////////
         // Constructors
-        group_iterator();
-        group_iterator(Iterator it, std::size_t size);
+        group_iterator()
+        {};
+
+        group_iterator(Iterator it, std::size_t size):
+            _it(it),
+            _size(size)
+        {};
 
         ////////////////////////////////////////////////////////////
         // Members access
-
-        auto base() const
-            -> iterator_type
+        iterator_type base() const
         {
             return _it;
         }
 
-        auto size() const
-            -> std::size_t
+        std::size_t size() const
         {
             return _size;
         }
@@ -44,14 +53,12 @@ class group_iterator
         ////////////////////////////////////////////////////////////
         // Element access
 
-        auto operator*() const
-            -> reference
+        reference operator*() const
         {
             return _it[_size - 1];
         }
 
-        auto operator->() const
-            -> pointer
+        pointer operator->() const
         {
             return &(operator*());
         }
@@ -59,45 +66,39 @@ class group_iterator
         ////////////////////////////////////////////////////////////
         // Increment/decrement operators
 
-        auto operator++()
-            -> group_iterator&
+        group_iterator& operator++()
         {
             _it += _size;
             return *this;
         }
 
-        auto operator++(int)
-            -> group_iterator
+        group_iterator operator++(int)
         {
-            auto tmp = *this;
+            group_iterator tmp = *this;
             operator++();
             return tmp;
         }
 
-        auto operator--()
-            -> group_iterator&
+        group_iterator& operator--()
         {
             _it -= _size;
             return *this;
         }
 
-        auto operator--(int)
-            -> group_iterator
+        group_iterator operator--(int)
         {
-            auto tmp = *this;
+            group_iterator tmp = *this;
             operator--();
             return tmp;
         }
 
-        auto operator+=(std::size_t increment)
-            -> group_iterator&
+        group_iterator& operator+=(std::size_t increment)
         {
             _it += _size * increment;
             return *this;
         }
 
-        auto operator-=(std::size_t increment)
-            -> group_iterator&
+        group_iterator& operator-=(std::size_t increment)
         {
             _it -= _size * increment;
             return *this;
@@ -106,22 +107,19 @@ class group_iterator
         ////////////////////////////////////////////////////////////
         // Elements access operators
 
-        auto operator[](std::size_t pos)
-            -> decltype(_it[pos * _size + _size - 1])
+        typename std::iterator_traits<Iterator>::reference operator[](std::size_t pos)
         {
             return _it[pos * _size + _size - 1];
         }
 
-        auto operator[](std::size_t pos) const
-            -> decltype(_it[pos * _size + _size - 1])
+        typename std::iterator_traits<Iterator>::reference operator[](std::size_t pos) const
         {
             return _it[pos * _size + _size - 1];
         }
 };
 
 template<typename Iterator1, typename Iterator2>
-auto iter_swap(group_iterator<Iterator1> lhs, group_iterator<Iterator2> rhs)
-    -> void
+void iter_swap(group_iterator<Iterator1> lhs, group_iterator<Iterator2> rhs)
 {
     std::swap_ranges(lhs.base(), lhs.base() + lhs.size(), rhs.base());
 }
@@ -130,17 +128,15 @@ auto iter_swap(group_iterator<Iterator1> lhs, group_iterator<Iterator2> rhs)
 // Comparison operators
 
 template<typename Iterator1, typename Iterator2>
-auto operator==(const group_iterator<Iterator1>& lhs,
+bool operator==(const group_iterator<Iterator1>& lhs,
                 const group_iterator<Iterator2>& rhs)
-    -> bool
 {
     return lhs.base() == rhs.base();
 }
 
 template<typename Iterator1, typename Iterator2>
-auto operator!=(const group_iterator<Iterator1>& lhs,
+bool operator!=(const group_iterator<Iterator1>& lhs,
                 const group_iterator<Iterator2>& rhs)
-    -> bool
 {
     return lhs.base() != rhs.base();
 }
@@ -149,33 +145,29 @@ auto operator!=(const group_iterator<Iterator1>& lhs,
 // Relational operators
 
 template<typename Iterator1, typename Iterator2>
-auto operator<(const group_iterator<Iterator1>& lhs,
+bool operator<(const group_iterator<Iterator1>& lhs,
                const group_iterator<Iterator2>& rhs)
-    -> bool
 {
     return lhs.base() < rhs.base();
 }
 
 template<typename Iterator1, typename Iterator2>
-auto operator<=(const group_iterator<Iterator1>& lhs,
+bool operator<=(const group_iterator<Iterator1>& lhs,
                 const group_iterator<Iterator2>& rhs)
-    -> bool
 {
     return lhs.base() <= rhs.base();
 }
 
 template<typename Iterator1, typename Iterator2>
-auto operator>(const group_iterator<Iterator1>& lhs,
+bool operator>(const group_iterator<Iterator1>& lhs,
                const group_iterator<Iterator2>& rhs)
-    -> bool
 {
     return lhs.base() > rhs.base();
 }
 
 template<typename Iterator1, typename Iterator2>
-auto operator>=(const group_iterator<Iterator1>& lhs,
+bool operator>=(const group_iterator<Iterator1>& lhs,
                 const group_iterator<Iterator2>& rhs)
-    -> bool
 {
     return lhs.base >= rhs.base();
 }
@@ -184,29 +176,25 @@ auto operator>=(const group_iterator<Iterator1>& lhs,
 // Arithmetic operators
 
 template<typename Iterator>
-auto operator+(group_iterator<Iterator> it, std::size_t size)
-    -> group_iterator<Iterator>
+group_iterator<Iterator> operator+(group_iterator<Iterator> it, std::size_t size)
 {
     return it += size;
 }
 
 template<typename Iterator>
-auto operator+(std::size_t size, group_iterator<Iterator> it)
-    -> group_iterator<Iterator>
+group_iterator<Iterator> operator+(std::size_t size, group_iterator<Iterator> it)
 {
     return it += size;
 }
 
 template<typename Iterator>
-auto operator-(group_iterator<Iterator> it, std::size_t size)
-    -> group_iterator<Iterator>
+group_iterator<Iterator> operator-(group_iterator<Iterator> it, std::size_t size)
 {
     return it -= size;
 }
 
 template<typename Iterator>
-auto operator-(const group_iterator<Iterator>& lhs, const group_iterator<Iterator>& rhs)
-    -> typename group_iterator<Iterator>::difference_type
+typename group_iterator<Iterator>::difference_type operator-(const group_iterator<Iterator>& lhs, const group_iterator<Iterator>& rhs)
 {
     return (lhs.base() - rhs.base()) / lhs.size();
 }
@@ -215,34 +203,43 @@ auto operator-(const group_iterator<Iterator>& lhs, const group_iterator<Iterato
 // Construction function
 
 template<typename Iterator>
-auto make_group_iterator(Iterator it, std::size_t size)
-    -> group_iterator<Iterator>
+group_iterator<Iterator> make_group_iterator(Iterator it, std::size_t size)
 {
-    return { it, size };
+    group_iterator<Iterator>(it, size);
 }
 
 template<typename Iterator>
-auto make_group_iterator(group_iterator<Iterator> it, std::size_t size)
-    -> group_iterator<Iterator>
+group_iterator<Iterator> make_group_iterator(group_iterator<Iterator> it, std::size_t size)
 {
-    return { it.base(), size * it.size() };
+    group_iterator<Iterator>(it.base(), size * it.size());
 }
 
 ////////////////////////////////////////////////////////////
 // Merge-insertion sort
 
+// Small node struct for pend elements
 template<
     typename RandomAccessIterator,
     typename Compare
 >
-auto merge_insertion_sort_impl(RandomAccessIterator first, RandomAccessIterator last,
+struct node
+{
+    RandomAccessIterator it;
+    typename std::list<RandomAccessIterator>::iterator next;
+};
+
+template<
+    typename RandomAccessIterator,
+    typename Compare
+>
+void merge_insertion_sort_impl(RandomAccessIterator first, RandomAccessIterator last,
                                Compare compare)
 {
     // Cache all the differences between a Jacobsthal number and its
     // predecessor that fit in 64 bits, starting with the difference
     // between the Jacobsthal numbers 4 and 3 (the previous ones are
     // unneeded)
-    static constexpr std::uint_least64_t jacobsthal_diff[] = {
+    static const unsigned long long jacobsthal_diff[] = {
         2u, 2u, 6u, 10u, 22u, 42u, 86u, 170u, 342u, 682u, 1366u,
         2730u, 5462u, 10922u, 21846u, 43690u, 87382u, 174762u, 349526u, 699050u,
         1398102u, 2796202u, 5592406u, 11184810u, 22369622u, 44739242u, 89478486u,
@@ -258,7 +255,7 @@ auto merge_insertion_sort_impl(RandomAccessIterator first, RandomAccessIterator 
 
     using std::iter_swap;
 
-    auto size = std::distance(first, last);
+    typename std::iterator_traits<RandomAccessIterator>::difference_type size = std::distance(first, last);
     if (size < 2) return;
 
     // Whether there is a stray element not in a pair
@@ -268,8 +265,8 @@ auto merge_insertion_sort_impl(RandomAccessIterator first, RandomAccessIterator 
     ////////////////////////////////////////////////////////////
     // Group elements by pairs
 
-    auto end = has_stray ? std::prev(last) : last;
-    for (auto it = first ; it != end ; it += 2)
+    RandomAccessIterator end = has_stray ? last - 1 : last;
+    for (RandomAccessIterator it = first ; it != end ; it += 2)
     {
         if (compare(it[1], it[0]))
         {
@@ -289,23 +286,19 @@ auto merge_insertion_sort_impl(RandomAccessIterator first, RandomAccessIterator 
     ////////////////////////////////////////////////////////////
     // Separate main chain and pend elements
 
-    // Small node struct for pend elements
-    struct node
-    {
-        RandomAccessIterator it;
-        typename std::list<RandomAccessIterator>::iterator next;
-    };
 
     // The first pend element is always part of the main chain,
     // so we can safely initialize the list with the first two
     // elements of the sequence
-    std::list<RandomAccessIterator> chain = { first, std::next(first) };
-    std::list<node> pend;
+    std::list<RandomAccessIterator> chain;
+    chain.push_back(first);
+    chain.push_back(first + 1);
+    std::list<node<RandomAccessIterator, Compare> > pend;
 
-    for (auto it = first + 2 ; it != end ; it += 2)
+    for (RandomAccessIterator it = first + 2 ; it != end ; it += 2)
     {
-        auto tmp = chain.insert(chain.end(), std::next(it));
-        pend.push_back({it, tmp});
+        typename std::list<RandomAccessIterator>::iterator tmp = chain.insert(chain.end(), it + 1);
+        pend.push_back(node<RandomAccessIterator, Compare>(it, tmp));
     }
 
     // Add the last element to pend if it exists, when it
@@ -313,7 +306,7 @@ auto merge_insertion_sort_impl(RandomAccessIterator first, RandomAccessIterator 
     // so giving it chain.end() as end insertion point is ok
     if (has_stray)
     {
-        pend.push_back({end, chain.end()});
+        pend.push_back(node<RandomAccessIterator, Compare>(end, chain.end()));
     }
 
     ////////////////////////////////////////////////////////////
@@ -322,18 +315,25 @@ auto merge_insertion_sort_impl(RandomAccessIterator first, RandomAccessIterator 
     for (int k = 0 ; ; ++k)
     {
         // Find next index
-        auto dist = jacobsthal_diff[k];
+        typename std::list<node<RandomAccessIterator, Compare> >::iterator it;
+        std::size_t dist = static_cast<std::size_t>(jacobsthal_diff[k]);
         if (dist >= pend.size()) break;
-        auto it = pend.begin();
+        it = pend.begin();
         std::advance(it, dist);
 
         while (true)
         {
-            auto insertion_point = std::upper_bound(
-                chain.begin(), it->next, it->it,
-                [=](auto lhs, auto rhs) {
-                    return compare(*lhs, *rhs);
+            struct CompareWrapper {
+                CompareWrapper(Compare comp) : comp(comp) {}
+                bool operator()(RandomAccessIterator lhs, RandomAccessIterator rhs) {
+                    return comp(*lhs, *rhs);
                 }
+                Compare comp;
+            };
+
+            CompareWrapper comp_wrapper(compare);
+            typename std::list<RandomAccessIterator>::iterator insertion_point = std::upper_bound(
+                chain.begin(), it->next, it->it, comp_wrapper
             );
             chain.insert(insertion_point, it->it);
 
@@ -344,14 +344,24 @@ auto merge_insertion_sort_impl(RandomAccessIterator first, RandomAccessIterator 
     }
 
     // If there are elements left, insert them too
-    while (not pend.empty())
+    while (!pend.empty())
     {
-        auto it = std::prev(pend.end());
-        auto insertion_point = std::upper_bound(
-            chain.begin(), it->next, it->it,
-            [=](auto lhs, auto rhs) {
-                return compare(*lhs, *rhs);
+        typename std::list<node<RandomAccessIterator, Compare> >::iterator it = pend.end();
+        --it; // replace std::prev() with manual decrement
+
+        // Similar replacement for lambda as above
+        struct CompareWrapper {
+            CompareWrapper(Compare comp) : comp(comp) {}
+            bool operator()(RandomAccessIterator lhs, RandomAccessIterator rhs) {
+                return comp(*lhs, *rhs);
             }
+            Compare comp;
+        };
+
+        CompareWrapper comp_wrapper(compare);
+
+        typename std::list<RandomAccessIterator>::iterator insertion_point = std::upper_bound(
+            chain.begin(), it->next, it->it, comp_wrapper
         );
         chain.insert(insertion_point, it->it);
         pend.pop_back();
@@ -363,22 +373,26 @@ auto merge_insertion_sort_impl(RandomAccessIterator first, RandomAccessIterator 
     std::vector<typename std::iterator_traits<RandomAccessIterator>::value_type> cache;
     cache.reserve(size);
 
-    for (auto&& it: chain)
+    for (typename std::list<RandomAccessIterator>::iterator it = chain.begin(); it != chain.end(); ++it)
     {
-        auto begin = it.base();
-        auto end = begin + it.size();
-        std::move(begin, end, std::back_inserter(cache));
+        RandomAccessIterator begin = *it;
+        RandomAccessIterator end = begin + 2;
+        std::copy(begin, end, std::back_inserter(cache));
     }
-    std::move(cache.begin(), cache.end(), first.base());
+    std::copy(cache.begin(), cache.end(), first);
+}
+
+template<typename RandomAccessIterator>
+void merge_insertion_sort(RandomAccessIterator first, RandomAccessIterator last)
+{
+    merge_insertion_sort(first, last, std::less<typename std::iterator_traits<RandomAccessIterator>::value_type>());
 }
 
 template<
     typename RandomAccessIterator,
-    typename Compare = std::less<>
+    typename Compare
 >
-auto merge_insertion_sort(RandomAccessIterator first, RandomAccessIterator last,
-                          Compare compare={})
-    -> void
+void merge_insertion_sort(RandomAccessIterator first, RandomAccessIterator last, Compare compare)
 {
     merge_insertion_sort_impl(
         make_group_iterator(first, 1),

@@ -6,11 +6,12 @@
 /*   By: lkrief <lkrief@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 12:29:14 by lkrief            #+#    #+#             */
-/*   Updated: 2023/07/26 03:36:57 by lkrief           ###   ########.fr       */
+/*   Updated: 2023/09/06 16:01:14 by lkrief           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Pmerge.hpp"
+#include "PMergeMe.hpp"
 #include <string>
 #include <iostream>
 #include <iomanip>
@@ -96,25 +97,45 @@ void tests(Pmerge& m, bool debug = false)
     unitTest(m, debug);
 }
 
+// int main(int ac, char**av)
+// {
+//     std::string str;
+//     for (int i = 1; i < ac; i++)
+//     {
+//         str.append(av[i]);
+//         str.append(" ");
+//     }
+
+//     try
+//     {
+//         std::string input(str);
+//         Pmerge m(input);
+//         tests(m);
+//     }
+//     catch(const std::exception& e)
+//     {
+//         std::cerr << BOLDRED << e.what() << std::endl << RESET;
+//     }
+
+//     return (0);
+// }
+
 int main(int ac, char**av)
 {
-    std::string str;
-    for (int i = 1; i < ac; i++)
-    {
-        str.append(av[i]);
-        str.append(" ");
-    }
+    (void) ac;
+    (void) av;
 
-    try
+    int arr[] = {2, 6, 9, 3, 7, 5};
+    std::vector<int> vect(arr, arr + sizeof(arr) / sizeof(int));
+
+
+    merge_insertion_sort(vect.begin(), vect.end());
+
+    for (std::vector<int>::iterator it = vect.begin(); it != vect.end(); it++)
     {
-        std::string input(str);
-        Pmerge m(input);
-        tests(m);
+        std:: cout << *it << " ";
     }
-    catch(const std::exception& e)
-    {
-        std::cerr << BOLDRED << e.what() << std::endl << RESET;
-    }
+    std::cout << std::endl;
 
     return (0);
 }
